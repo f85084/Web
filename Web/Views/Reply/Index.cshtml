@@ -1,0 +1,67 @@
+﻿@using Library;
+@model IEnumerable<Library.Reply>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="row">
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.Label("model.Id", "會員編號")
+                </th>
+                <th>
+                    @Html.Label("model.UserId", "會員帳號")
+                </th>
+                <th>
+                    @Html.Label("model.MessageId", "留言編號")
+                </th>
+                <th>
+                    @Html.Label("model.UserName", "會員暱稱")
+                </th>
+                <th>
+                    @Html.Label("model.Context", "留言內容")
+                </th>
+                <th>
+                    @Html.Label("model.CreatDate", "留言日期")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (Reply item in Model)
+            {
+                using (Html.BeginForm("Delete", "Message", new { id = item.Id }))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MessageId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Context)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatDate)
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Index", "Reply", new{ id = item.Id })'" />
+                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? Id = @item.Id , Name = @item.UserId');" />
+                        </td>
+                    </tr>
+                }
+            }
+
+
+        </table>
+    </div>
+</div>

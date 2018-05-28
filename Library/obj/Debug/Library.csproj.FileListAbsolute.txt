@@ -1,0 +1,12 @@
+D:\Project\Web\Library\bin\Debug\Library.dll.config
+D:\Project\Web\Library\bin\Debug\Library.dll
+D:\Project\Web\Library\bin\Debug\Library.pdb
+D:\Project\Web\Library\bin\Debug\EntityFramework.dll
+D:\Project\Web\Library\bin\Debug\EntityFramework.SqlServer.dll
+D:\Project\Web\Library\bin\Debug\EntityFramework.xml
+D:\Project\Web\Library\bin\Debug\EntityFramework.SqlServer.xml
+D:\Project\Web\Library\obj\Debug\Library.csproj.CoreCompileInputs.cache
+D:\Project\Web\Library\obj\Debug\Library.csproj.CopyComplete
+D:\Project\Web\Library\obj\Debug\Library.dll
+D:\Project\Web\Library\obj\Debug\Library.pdb
+D:\Project\Web\Library\obj\Debug\Library.csprojResolveAssemblyReference.cache

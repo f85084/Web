@@ -1,0 +1,65 @@
+﻿@using Library;
+@model IEnumerable<Library.User>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+
+
+<div class="row">
+    <div class="table-responsive">
+        <div class="col-sm-9">
+            <button type="button" class="btn btn-primary btn-sm" style="margin-top: 10px;margin-bottom: 10px;" value="建立新的會員" onclick="location.href='@Url.Action("Create", "User")'">建立新的會員</button>
+        </div>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.Label("UserId", "會員編號")
+                </th>
+                <th>
+                    @Html.Label("UserClass", "會員類別")
+                </th>
+                <th>
+                    @Html.Label("UserEmail", "會員信箱")
+                </th>
+                <th>
+                    @Html.Label("UserName", "會員姓名")
+                </th>
+                <th>
+                </th>
+            </tr>
+
+            @foreach (User item in Model)
+            {
+                using (Html.BeginForm("Delete", "User", new { id = item.Id }))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserAccount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-primary btn-sm" value="編輯" onclick="location.href='@Url.Action("Edit", "User", new{ id = item.Id })'" />
+                            <input type="button" class="btn btn-primary btn-sm" value="明細" onclick="location.href='@Url.Action("Details", "User", new{ id = item.Id })'" />
+                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? Id = @item.Id , Name = @item.UserAccount');" />
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

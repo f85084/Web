@@ -1,0 +1,84 @@
+﻿@model Library.Reply
+@*@using Library;
+    @model IEnumerable<Library.Reply>*@
+@{
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<div class="row">
+    <h2>回覆留言</h2>
+    @*<table class="table">
+        <tr>
+            <th>
+                @Html.Label("model.Id", "會員編號")
+            </th>
+            <th>
+                @Html.Label("model.UserId", "會員帳號")
+            </th>
+            <th>
+                @Html.Label("model.UserName", "會員暱稱")
+            </th>
+            <th>
+                @Html.Label("model.Context", "留言內容")
+            </th>
+            <th>
+                @Html.Label("model.CreatDate", "留言日期")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Context)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatDate)
+                </td>
+            </tr>
+        }*@
+
+
+
+
+    @using (Html.BeginForm("Create", "Reply"))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-horizontal">
+
+            @Html.Hidden("UserId", "1")
+            @Html.Hidden("MessageId", "24")
+            @Html.Hidden("UserName", "BB")
+
+            <div class="form-group">
+                @Html.Label("Context", "內容", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextArea("Context", " ", 6, 60, new { style = "border: solid 1px #ccc; border-radius: 0.25rem; " })
+                    @Html.ValidationMessageFor(model => model.Context, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="回覆" class="btn btn-default  " />
+                </div>
+            </div>
+        </div>
+    }
+    <div>
+        @Html.ActionLink("回到列表", "Index")
+    </div>
+</div>
