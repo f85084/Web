@@ -1,69 +1,70 @@
-﻿@model Library.User
+﻿@using Library.WebShare;
+
+@model Library.User
 @{
 }
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <div class="row">
     <div class="table-responsive">
         <h2>建立會員</h2>
 
         @using (Html.BeginForm("Create", "User"))
-        {
-
-            <div class="form-horizontal">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.Label("UserAccount", "帳號", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("UserClass", "會員類別", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("UserClass", new List<SelectListItem>
-                            {
-                                new SelectListItem{Text = "管理員", Value = "0"},
-                                new SelectListItem{Text = "一般使用者", Value = "1"}
-                            }, "請選擇會員身分")
-                        @Html.ValidationMessageFor(model => model.UserClass, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("Email", "會員Email", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("Password", "會員密碼", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.Password("Password", "", new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("UserName", "會員名稱", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="建立" class="btn btn-default" />
-                    </div>
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("UserAccount", "帳號", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserAccount)
+                    @*@Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
                 </div>
             </div>
-        }
+
+            <div class="form-group">
+                @Html.Label("UserClass", "會員類別", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("UserClass", new List<SelectListItem>
+                                    {
+                                        new SelectListItem{Text = "管理員", Value = "0"},
+                                        new SelectListItem{Text = "一般使用者", Value = "1"}
+                                    }, "請選擇會員身分")
+                    @Html.ValidationMessageFor(model => model.UserClass, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Email", "會員Email", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email)
+                    @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Password", "會員密碼", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Password("Password", "", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("UserName", "會員名稱", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserName)
+                    @*@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="建立" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+}
         <div>
             @Html.ActionLink("回到列表", "Index")
         </div>

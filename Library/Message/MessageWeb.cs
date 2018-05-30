@@ -11,12 +11,13 @@ namespace Library
 {
     public class MessageWeb
     {
+        #region 讀取
         public IEnumerable<Message> Messages
         {
             get
             {
                 string connectionString =
-                    ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
+                    ConfigurationManager.ConnectionStrings["WebContext"].ConnectionString;
                 List<Message> messages = new List<Message>();
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
@@ -38,9 +39,11 @@ namespace Library
                 return messages;
             }
         }
+        #endregion
 
         DateTime dt = DateTime.Now; //現在時間 
 
+        #region 新增留言
         public void AddMessage(Message message)
         {
             string connectionString =
@@ -85,52 +88,55 @@ namespace Library
                 cmd.ExecuteNonQuery();
             }
         }
+        #endregion
 
-        //public void SaveMessage(Message message)
-        //{
-        //    string connectionString =
-        //        ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
+        #region 新增留言
+        public void SaveMessage(Message message)
+        {
+            string connectionString =
+                ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
 
-        //    using (SqlConnection con = new SqlConnection(connectionString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand("spSaveMessage", con)
-        //        {
-        //            CommandType = CommandType.StoredProcedure
-        //        };
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spSaveMessage", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
 
-        //        SqlParameter sqlParamUserId = new SqlParameter
-        //        {
-        //            ParameterName = "@UserId",
-        //            Value = message.UserId
-        //        };
-        //        cmd.Parameters.Add(sqlParamUserId);
+                SqlParameter sqlParamUserId = new SqlParameter
+                {
+                    ParameterName = "@UserId",
+                    Value = message.UserId
+                };
+                cmd.Parameters.Add(sqlParamUserId);
 
-        //        SqlParameter sqlParamUserName = new SqlParameter
-        //        {
-        //            ParameterName = "@UserName",
-        //            Value = message.UserName
-        //        };
-        //        cmd.Parameters.Add(sqlParamUserName);
+                SqlParameter sqlParamUserName = new SqlParameter
+                {
+                    ParameterName = "@UserName",
+                    Value = message.UserName
+                };
+                cmd.Parameters.Add(sqlParamUserName);
 
-        //        SqlParameter sqlParamContext = new SqlParameter
-        //        {
-        //            ParameterName = "@Context",
-        //            Value = message.Context
-        //        };
-        //        cmd.Parameters.Add(sqlParamContext);
+                SqlParameter sqlParamContext = new SqlParameter
+                {
+                    ParameterName = "@Context",
+                    Value = message.Context
+                };
+                cmd.Parameters.Add(sqlParamContext);
 
-        //        SqlParameter sqlParamCreatDate = new SqlParameter
-        //        {
-        //            ParameterName = "@CreatDate",
-        //            Value = dt
-        //        };
-        //        cmd.Parameters.Add(sqlParamCreatDate);
+                SqlParameter sqlParamCreatDate = new SqlParameter
+                {
+                    ParameterName = "@CreatDate",
+                    Value = dt
+                };
+                cmd.Parameters.Add(sqlParamCreatDate);
 
-        //        con.Open();
-        //        cmd.ExecuteNonQuery();
-        //    }
-        //}
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        #endregion
 
         //public void DeleteMessage(int id)
         //{

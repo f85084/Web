@@ -1,0 +1,47 @@
+﻿@*@model Library.Reply*@
+@using Library;
+@model IEnumerable<Library.Reply>
+
+@*@using Web.Models;
+    @model MessageReply*@
+
+@foreach (Reply item in Model)
+{
+    <div class="card-title">
+        @*@Html.HiddenFor(modelItem => item.MessageId)*@
+        <ul>
+            @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
+        </ul>
+        <ul>
+            @Html.Label("model.Context", "留言內容") :  @Html.DisplayFor(modelItem => item.Context)
+        </ul>
+        <ul>
+            @Html.Label("model.CreatDate", "留言日期") : @Html.DisplayFor(modelItem => item.CreatDate)
+        </ul>
+    </div>
+}
+
+@*<div>
+        <h4>回覆</h4>
+
+        <hr />
+        <dl class="dl-horizontal">
+            <ul>
+                @Html.DisplayNameFor(model => model.UserName)
+            </ul>
+
+            <ul>
+                @Html.DisplayFor(model => model.UserName)
+            </ul>
+
+            <ul>
+                @Html.DisplayNameFor(model => model.Context)
+            </ul>
+
+            <ul>
+                @Html.DisplayFor(model => model.Context)
+            </ul>
+
+        </dl>
+
+    </div>*@

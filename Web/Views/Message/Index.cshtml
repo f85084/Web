@@ -1,76 +1,38 @@
 ﻿@using Library;
 @model IEnumerable<Library.Message>
 
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
 <div class="row">
     <div class="table-responsive">
-        <div class="col-sm-9">
+        <div class="col-sm-7">
             <button type="button" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" value="建立新的留言" onclick="location.href='@Url.Action("Create", "Message")'">建立新的留言</button>
         </div>
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.Label("model.Id", "會員編號")
-                </th>
-                <th>
-                    @Html.Label("model.UserId", "會員帳號")
-                </th>
-                <th>
-                    @Html.Label("model.UserName", "會員暱稱")
-                </th>
-                <th>
-                    @Html.Label("model.Context", "留言內容")
-                </th>
-                <th>
-                    @Html.Label("model.CreatDate", "留言日期")
-                </th>
-                <th></th>
-            </tr>
-
+        <div class="col-sm-7">
             @foreach (Message item in Model)
             {
-                using (Html.BeginForm("Delete", "Message", new { id = item.Id }))
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Context)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CreatDate)
-                        </td>
-                        <td>
-                            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply")'" />
-                            @*<button type="button" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" value="建立新的留言" onclick="location.href='@Url.Action("Create", "Message")'">建立新的留言</button>*@
-                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? Id = @item.Id , Name = @item.UserId');" />
-                        </td>
-                    </tr>
-                }
-            }
-        </table>
+                <div class="card">
+                    <div class="card-header">
+                        @Html.Hidden("UserId", "2")
+                        @Html.Hidden("UserName", "BB")
+                        <ul>
+                            @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
+                        </ul>
+                        <ul>
+                            @Html.Label("model.Context", "留言內容") :  @Html.DisplayFor(modelItem => item.Context)
+                        </ul>
+                        <ul>
+                            @Html.Label("model.CreatDate", "留言日期") : @Html.DisplayFor(modelItem => item.CreatDate)
+                        </ul>
+                        <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply")'" />
+                    </div>
+
+                    <div class="card-body">
+                        <h5>回覆</h5>
+                        @*@Html.Partial("_ReplyPartial", Model)*@
+                    </div>
+                </div>
+              }
+        </div>
     </div>
 </div>
 
-@foreach (Message item in Model)
-{
-    <div class="card">
-        <h5 class="card-header">@Html.DisplayFor(modelItem => item.Context)</h5>
-        <div class="card-body">
-            <h5 class="card-title">@Html.DisplayFor(modelItem => item.UserName)</h5>
-            <p class="card-text">@Html.DisplayFor(modelItem => item.Context)</p>
-            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply")'" />
-        </div>
-    </div>
-}
+

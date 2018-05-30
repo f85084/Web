@@ -16,7 +16,7 @@ namespace Library
             get
             {
                 string connectionString =
-                    ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
+                    ConfigurationManager.ConnectionStrings["WebContext"].ConnectionString;
                 List<Reply> replys = new List<Reply>();
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {

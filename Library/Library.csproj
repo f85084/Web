@@ -55,6 +55,9 @@
     <Compile Include="User\User.cs" />
     <Compile Include="User\UserWeb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\MessageReply.cs" />
+    <Compile Include="ViewModel\MessageReplyWeb.cs" />
+    <Compile Include="WebShare\WebShareConst.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

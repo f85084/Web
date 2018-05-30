@@ -10,40 +10,21 @@ using System.Data.Entity;
 using Reply = Web.Models.Reply;
 
 
-namespace webtext.web.Controllers
+namespace Web.Controllers
 {
     public class ReplyController : Controller
     {
+        #region 頁面取得
         public ActionResult Index()
         {
             ReplyWeb replyWeb = new ReplyWeb();
             List<Library.Reply> replys = replyWeb.Replys.ToList();
             return View(replys);
+            //return View("_ReplyPartial", replys);
         }
+        #endregion
 
-        //public ActionResult Details(int id = 0)
-        //{
-        //    var webContext = new WebContext();
-        //    Reply reply;
-        //    if (id == 0)
-        //    {
-        //        reply = new Reply
-        //        {
-        //            Id = 0,
-        //            UserId = 0,
-        //            UserName = "NULL",
-        //            Context = "NULL",
-        //        };
-        //    }
-        //    else
-        //    {
-        //        reply = webContext.Replys.Single(p => p.Id == id);
-        //        //Throws exception if can not find the single entity
-        //    }
-        //    return View(reply);
-        //}
-
-        /**建立**/
+        #region 建立
         [HttpGet]
         public ActionResult Create()
         {
@@ -62,6 +43,32 @@ namespace webtext.web.Controllers
             replyWeb.AddReply(reply);
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region 回覆Partial
+        [HttpGet]
+        public PartialViewResult ReplyPartial(int MessageId)
+        {
+            //ReplyWeb replyWeb = new ReplyWeb();
+            //List<Library.Reply> replys = replyWeb.Replys.ToList();
+            ReplyWeb replyWeb = new ReplyWeb();
+            List<Library.Reply> replys = replyWeb.Replys.ToList();
+            //Library.Reply reply = replyWeb.Replys.Single(g => g.Id == id);
+            return PartialView(replys);
+        }
+        #endregion
+
+
+        #region 測試回覆Partial
+        [HttpGet]
+        public ActionResult Index2()
+        {
+            ReplyWeb replyWeb = new ReplyWeb();
+            List<Library.Reply> replys = replyWeb.Replys.ToList();
+            //return View(replys);
+            return View("_ReplyPartial", replys);
+        }
+        #endregion
 
     }
 }

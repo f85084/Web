@@ -61,10 +61,10 @@ textarea {
     border-width: .2rem 0 0;
 }
 
-@media (min-width: 576px) .bd-example {
+/*@media (min-width: 576px) .bd-example {
     padding: 1.5rem;
     margin-right: 0;
     margin-left: 0;
     border-width: .2rem;
-}
+}*/
 

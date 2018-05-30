@@ -6,64 +6,60 @@ using Web.Data;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Net;
+using System.Configuration;
 using User = Web.Models.User;
+using System.Data.SqlClient;
 
 namespace Web.Controllers
 {
     public class UserController : Controller
     {
 
-        public ActionResult Details(int id = 0)
-        {
-            var webContext = new WebContext();
-            User user;
-            if (id == 0)
-            {
-                user = new User
-                {
-                    Id = 0,
-                    UserAccount = "Name0",
-                    UserClass = 0,
-                    Email = "NULL",
-                    Password = "NULL",
-                    UserName = "NULL"
-                };
-            }
-            else
-            {
-                user = webContext.Users.Single(p => p.Id == id);
-                //    //Throws exception if can not find the single entity
-            }
-            return View(user);
-        }
-
-        //public async Task<ActionResult> Details(int? id)
-        //{
-        //    var webContext = new WebContext();
-        //    //    Gamer gamer;
-        //    if (id == null)
-        //    {
-        //        //return BadRequest code.
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    User user = await webContext.Users.FindAsync(id);
-        //    //if (user == null)
-        //    //{
-        //    //    //return HttpNotFound code.
-        //    //    return HttpNotFound();
-        //    //}
-        //    return View(user);
-        //}
-
-
+        #region 頁面取得
         public ActionResult Index()
         {
             UserWeb context = new UserWeb();
             List<Library.User> users = context.Users.ToList();
             return View(users);
         }
+        #endregion
 
-        /**建立**/
+        #region 明細
+        public ActionResult Details(int id = 0)
+        {
+            var webContext = new WebContext();
+            //string connectionString = ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
+
+            //using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                User user;
+                if (id == 0)
+                {
+                    user = new User
+                    {
+                        Id = 0,
+                        UserAccount = "Name0",
+                        UserClass = 0,
+                        Email = "NULL",
+                        Password = "NULL",
+                        UserName = "NULL"
+                    };
+                }
+                else
+                {
+                    user = webContext.Users.Single(p => p.Id == id);
+                    //    //Throws exception if can not find the single entity
+
+                    //UserWeb userWeb = new UserWeb();
+                    //Library.User users = userWeb.Users.Single(g => g.Id == id);
+                }
+                return View(user);
+            }
+        }
+        #endregion
+
+
+        #region 建立
         [HttpGet]
         public ActionResult Create()
         {
@@ -82,8 +78,9 @@ namespace Web.Controllers
             userWeb.AddUser(user);
             return RedirectToAction("Index");
         }
+        #endregion
 
-        /**更新讀取**/
+        #region 更新
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -94,7 +91,7 @@ namespace Web.Controllers
 
         /**更新動作**/
         [HttpPost]
-        public ActionResult Edit([Bind(Include = "UserAccount, UserClass, Email, Password, UserName")]Library.User user)
+        public ActionResult Edit([Bind(Include = "Id,UserAccount, UserClass, Email, Password, UserName")]Library.User user)
         {
             UserWeb userWeb = new UserWeb();
             user.Id = userWeb.Users.Single(g => g.Id == user.Id).Id;
@@ -105,11 +102,11 @@ namespace Web.Controllers
             }
 
             userWeb.SaveUser(user);
-
             return RedirectToAction("Index");
         }
+        #endregion
 
-        /**刪除動作**/
+        #region 刪除
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -117,6 +114,7 @@ namespace Web.Controllers
             userWeb.DeleteUser(id);
             return RedirectToAction("Index");
         }
+        #endregion
 
 
     }

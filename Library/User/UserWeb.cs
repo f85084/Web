@@ -11,12 +11,13 @@ namespace Library
 {
     public class UserWeb
     {
+        #region 讀取
         public IEnumerable<User> Users
         {
             get
             {
                 string connectionString =
-                    ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
+                    ConfigurationManager.ConnectionStrings["WebContext"].ConnectionString;
                 List<User> users = new List<User>();
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
@@ -43,9 +44,10 @@ namespace Library
                 return users;
             }
         }
+        #endregion
 
         DateTime dt = DateTime.Now; //現在時間 
-
+        #region 新增留言
         public void AddUser(User user)
         {
             string connectionString =
@@ -111,7 +113,9 @@ namespace Library
                 cmd.ExecuteNonQuery();
             }
         }
+        #endregion
 
+        #region 更新
         public void SaveUser(User user)
         {
             string connectionString =
@@ -124,6 +128,12 @@ namespace Library
                     CommandType = CommandType.StoredProcedure
                 };
 
+                SqlParameter sqlParamId = new SqlParameter
+                {
+                    ParameterName = "@Id",
+                    Value = user.Id
+                };
+                cmd.Parameters.Add(sqlParamId);
 
                 SqlParameter sqlParamUserAccount = new SqlParameter
                 {
@@ -178,7 +188,9 @@ namespace Library
                 cmd.ExecuteNonQuery();
             }
         }
+        #endregion
 
+        #region 刪除
         public void DeleteUser(int id)
         {
             string connectionString =
@@ -200,7 +212,7 @@ namespace Library
                 cmd.ExecuteNonQuery();
             }
         }
-
+        #endregion
 
     }
 }

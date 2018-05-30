@@ -9,85 +9,67 @@ using System.Text;
 using System.Threading.Tasks;
 using Message = Web.Models.Message;
 
-namespace webtext.web.Controllers
+namespace Web.Controllers
 {
     public class MessageController : Controller
     {
+        #region 頁面取得
         public ActionResult Index()
         {
             MessageWeb messageWeb = new MessageWeb();
             List<Library.Message> messages = messageWeb.Messages.ToList();
             return View(messages);
         }
+        #endregion
 
-        public ActionResult Details(int id = 0)
+        //#region 建立
+        //[HttpGet]
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public ActionResult Create(Library.Message message)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View("Create");
+        //    }
+
+        //    MessageWeb messageWeb = new MessageWeb();
+        //    messageWeb.AddMessage(message);
+        //    return RedirectToAction("Index");
+        //}
+        //#endregion
+
+        #region 建立
+        [HttpGet]
+        public ActionResult Edit(int userId)
         {
-            var webContext = new WebContext();
-            Message message;
-            if (id == 0)
-            {
-                message = new Message
-                {
-                    Id = 0,
-                    UserId = 0,
-                    UserName = "NULL",
-                    Context = "NULL",
-                };
-            }
-            else
-            {
-                message = webContext.Messages.Single(p => p.Id == id);
-                //Throws exception if can not find the single entity
-            }
+            MessageWeb messageWeb = new MessageWeb();
+            Library.Message message = messageWeb.Messages.Single(g => g.UserId == userId);
             return View(message);
         }
 
-        /**建立**/
-        [HttpGet]
-        public ActionResult Create()
-        {
-            return View();
-        }
-
+        /**更新動作**/
         [HttpPost]
-        public ActionResult Create(Library.Message message)
+        public ActionResult Edit([Bind(Include = "UserId,UserName, Context, CreatDate")]Library.Message message)
         {
+            MessageWeb messageWeb = new MessageWeb();
+            message.UserId = messageWeb.Messages.Single(g => g.UserId == message.UserId).UserId;
+
             if (!ModelState.IsValid)
             {
-                return View("Create");
+                return View("Edit", message);
             }
 
-            MessageWeb messageWeb = new MessageWeb();
-            messageWeb.AddMessage(message);
+            messageWeb.SaveMessage(message);
             return RedirectToAction("Index");
         }
+        #endregion
 
-        /**更新讀取**/
-        //[HttpGet]
-        //public ActionResult Edit(int id)
-        //{
-        //    MessageWeb messageWeb = new MessageWeb();
-        //    Library.Message message = messageWeb.Messages.Single(g => g.Id == id);
-        //    return View(message);
-        //}
-
-        ///**更新動作**/
-        //[HttpPost]
-        //public ActionResult Edit([Bind(Include = "UserId, UserName, Context")]Library.Message message)
-        //{
-        //    MessageWeb messageWeb = new MessageWeb();
-        //    message.Id = messageWeb.Messages.Single(g => g.Id == message.Id).Id;
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View("Edit", message);
-        //    }
-
-        //    messageWeb.SaveMessage(message);
-
-        //    return RedirectToAction("Index");
-        //}
-
+        #region 刪除
         ///**刪除動作**/
         //[HttpPost]
         //public ActionResult Delete(int id)
@@ -96,6 +78,18 @@ namespace webtext.web.Controllers
         //    messageWeb.DeleteMessage(id);
         //    return RedirectToAction("Index");
         //}
+        #endregion
+
+        #region 測試回覆Partial
+        [HttpGet]
+        public ActionResult Index2()
+        {
+            ReplyWeb replyWeb = new ReplyWeb();
+            List<Library.Reply> replys = replyWeb.Replys.ToList();
+            //return View(replys);
+            return View("_ReplyPartial", replys);
+        }
+        #endregion
 
     }
 }
