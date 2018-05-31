@@ -7,7 +7,9 @@ using Web.Data;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 using Message = Web.Models.Message;
+using Reply = Web.Models.Reply;
 
 namespace Web.Controllers
 {
@@ -22,51 +24,49 @@ namespace Web.Controllers
         }
         #endregion
 
-        //#region 建立
+        #region 建立
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(Library.Message message)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Create");
+            }
+
+            MessageWeb messageWeb = new MessageWeb();
+            messageWeb.AddMessage(message);
+            return RedirectToAction("Index");
+        }
+        #endregion
+
+        #region 編輯方式建立
         //[HttpGet]
-        //public ActionResult Create()
+        //public ActionResult Edit()
         //{
         //    return View();
         //}
 
+        ///**更新動作**/
         //[HttpPost]
-        //public ActionResult Create(Library.Message message)
+        //public ActionResult Edit([Bind(Include = "UserId,UserName, Context, CreatDate")]Library.Message message)
         //{
+        //    MessageWeb messageWeb = new MessageWeb();
+        //    message.UserId = messageWeb.Messages.Single(g => g.UserId == message.UserId).UserId;
+
         //    if (!ModelState.IsValid)
         //    {
-        //        return View("Create");
+        //        return View("Edit", message);
         //    }
 
-        //    MessageWeb messageWeb = new MessageWeb();
-        //    messageWeb.AddMessage(message);
+        //    messageWeb.SaveMessage(message);
         //    return RedirectToAction("Index");
         //}
-        //#endregion
-
-        #region 建立
-        [HttpGet]
-        public ActionResult Edit(int userId)
-        {
-            MessageWeb messageWeb = new MessageWeb();
-            Library.Message message = messageWeb.Messages.Single(g => g.UserId == userId);
-            return View(message);
-        }
-
-        /**更新動作**/
-        [HttpPost]
-        public ActionResult Edit([Bind(Include = "UserId,UserName, Context, CreatDate")]Library.Message message)
-        {
-            MessageWeb messageWeb = new MessageWeb();
-            message.UserId = messageWeb.Messages.Single(g => g.UserId == message.UserId).UserId;
-
-            if (!ModelState.IsValid)
-            {
-                return View("Edit", message);
-            }
-
-            messageWeb.SaveMessage(message);
-            return RedirectToAction("Index");
-        }
         #endregion
 
         #region 刪除
@@ -82,11 +82,13 @@ namespace Web.Controllers
 
         #region 測試回覆Partial
         [HttpGet]
-        public ActionResult Index2()
+        public ActionResult Index2(int messageId = 36)
         {
             ReplyWeb replyWeb = new ReplyWeb();
             List<Library.Reply> replys = replyWeb.Replys.ToList();
-            //return View(replys);
+            replys = replyWeb.Replys
+                    .Where(x => x.MessageId == messageId)
+                    .ToList();
             return View("_ReplyPartial", replys);
         }
         #endregion

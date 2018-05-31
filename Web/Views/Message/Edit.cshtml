@@ -1,15 +1,17 @@
 ﻿@model Library.Message
 @{
+    ViewBag.Title = "新增留言";
 }
 <div class="row">
     <h2>新增留言</h2>
-    @using (Html.BeginForm("Create", "Message"))
+    @*@using (Html.BeginForm("Create", "Message"))*@
+    @using (Html.BeginForm("Edit", "Message"))
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-horizontal">
-            @Html.Hidden("UserId", "8")
-            @Html.Hidden("UserName", "A888")
+            @Html.Hidden("UserId", "2")
+            @Html.Hidden("UserName", "BB")
             <div class="form-group">
                 @Html.Label("Context", "內容", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">

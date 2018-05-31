@@ -45,27 +45,27 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region 回覆Partial
-        [HttpGet]
-        public PartialViewResult ReplyPartial(int MessageId)
-        {
-            //ReplyWeb replyWeb = new ReplyWeb();
-            //List<Library.Reply> replys = replyWeb.Replys.ToList();
-            ReplyWeb replyWeb = new ReplyWeb();
-            List<Library.Reply> replys = replyWeb.Replys.ToList();
-            //Library.Reply reply = replyWeb.Replys.Single(g => g.Id == id);
-            return PartialView(replys);
-        }
-        #endregion
+        //#region 回覆Partial
+        //[HttpGet]
+        //public PartialViewResult ReplyPartial(int MessageId)
+        //{
+        //    ReplyWeb replyWeb = new ReplyWeb();
+        //    List<Library.Reply> replys = replyWeb.Replys.ToList();
+        //    //Library.Reply reply = replyWeb.Replys.Single(g => g.Id == id);
+        //    return PartialView(replys);
+        //}
+        //#endregion
 
 
         #region 測試回覆Partial
         [HttpGet]
-        public ActionResult Index2()
+        public ActionResult _ReplyPartial(int messageId)
         {
             ReplyWeb replyWeb = new ReplyWeb();
             List<Library.Reply> replys = replyWeb.Replys.ToList();
-            //return View(replys);
+            replys = replyWeb.Replys
+                    .Where(x => x.MessageId == messageId)
+                    .ToList();
             return View("_ReplyPartial", replys);
         }
         #endregion

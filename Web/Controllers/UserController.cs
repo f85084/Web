@@ -24,41 +24,6 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region 明細
-        public ActionResult Details(int id = 0)
-        {
-            var webContext = new WebContext();
-            //string connectionString = ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
-
-            //using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                User user;
-                if (id == 0)
-                {
-                    user = new User
-                    {
-                        Id = 0,
-                        UserAccount = "Name0",
-                        UserClass = 0,
-                        Email = "NULL",
-                        Password = "NULL",
-                        UserName = "NULL"
-                    };
-                }
-                else
-                {
-                    user = webContext.Users.Single(p => p.Id == id);
-                    //    //Throws exception if can not find the single entity
-
-                    //UserWeb userWeb = new UserWeb();
-                    //Library.User users = userWeb.Users.Single(g => g.Id == id);
-                }
-                return View(user);
-            }
-        }
-        #endregion
-
-
         #region 建立
         [HttpGet]
         public ActionResult Create()
@@ -89,7 +54,6 @@ namespace Web.Controllers
             return View(user);
         }
 
-        /**更新動作**/
         [HttpPost]
         public ActionResult Edit([Bind(Include = "Id,UserAccount, UserClass, Email, Password, UserName")]Library.User user)
         {

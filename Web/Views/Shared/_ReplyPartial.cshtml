@@ -4,21 +4,23 @@
 
 @*@using Web.Models;
     @model MessageReply*@
+@Html.Hidden("MessageId", "36")
 
 @foreach (Reply item in Model)
 {
-    <div class="card-title">
-        @*@Html.HiddenFor(modelItem => item.MessageId)*@
-        <ul>
-            @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
-        </ul>
-        <ul>
-            @Html.Label("model.Context", "留言內容") :  @Html.DisplayFor(modelItem => item.Context)
-        </ul>
-        <ul>
-            @Html.Label("model.CreatDate", "留言日期") : @Html.DisplayFor(modelItem => item.CreatDate)
-        </ul>
-    </div>
+<div class="card-title">
+    @*@Html.Hidden("MessageId", "36")*@
+    <ul>
+        @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
+    </ul>
+    <ul>
+        @Html.Label("model.Context", "留言內容") :  @Html.DisplayFor(modelItem => item.Context)
+    </ul>
+    <ul>
+        @Html.Label("model.CreatDate", "留言日期") : @Html.DisplayFor(modelItem => item.CreatDate)
+    </ul>
+    <hr />
+</div>
 }
 
 @*<div>
