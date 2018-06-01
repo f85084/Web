@@ -22,3 +22,7 @@ D:\Anna\product\Web\Library\obj\Debug\Library.csproj.CopyComplete
 D:\Anna\product\Web\Library\obj\Debug\Library.dll
 D:\Anna\product\Web\Library\obj\Debug\Library.pdb
 D:\Anna\product\Web\Library\obj\Debug\Library.csprojResolveAssemblyReference.cache
+D:\Anna\product\Web\Library\bin\Debug\PagedList.dll
+D:\Anna\product\Web\Library\bin\Debug\PagedList.Mvc.dll
+D:\Anna\product\Web\Library\bin\Debug\PagedList.xml
+D:\Anna\product\Web\Library\bin\Debug\PagedList.Mvc.xml

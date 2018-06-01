@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using PagedList;
 using Message = Web.Models.Message;
 using Reply = Web.Models.Reply;
 
@@ -20,6 +21,29 @@ namespace Web.Controllers
         {
             MessageWeb messageWeb = new MessageWeb();
             List<Library.Message> messages = messageWeb.Messages.ToList();
+            return View(messages);
+        }
+        #endregion
+
+        #region 頁面取得 Index3
+        [HttpGet]
+        public ActionResult Index3(string searchBy, string searchText)
+        {
+            MessageWeb messageWeb = new MessageWeb();
+            List<Library.Message> messages = messageWeb.Messages.ToList();
+            if (searchBy == "UserName")
+            {
+                 messages = messageWeb.Messages
+                    .Where(x => x.UserName == searchText || searchText == null)
+                    .ToList();
+            }
+            if (searchBy == "Context")
+            {
+                messages = messageWeb.Messages
+                    .Where(x => x.Context.Contains(searchText) || searchText == null)
+                    .ToList();
+            }
+            //IPagedList<Message> messagePagedList = messages.ToPagedList(pageNumber ?? 1, 5);
             return View(messages);
         }
         #endregion
@@ -43,30 +67,6 @@ namespace Web.Controllers
             messageWeb.AddMessage(message);
             return RedirectToAction("Index");
         }
-        #endregion
-
-        #region 編輯方式建立
-        //[HttpGet]
-        //public ActionResult Edit()
-        //{
-        //    return View();
-        //}
-
-        ///**更新動作**/
-        //[HttpPost]
-        //public ActionResult Edit([Bind(Include = "UserId,UserName, Context, CreatDate")]Library.Message message)
-        //{
-        //    MessageWeb messageWeb = new MessageWeb();
-        //    message.UserId = messageWeb.Messages.Single(g => g.UserId == message.UserId).UserId;
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View("Edit", message);
-        //    }
-
-        //    messageWeb.SaveMessage(message);
-        //    return RedirectToAction("Index");
-        //}
         #endregion
 
         #region 刪除

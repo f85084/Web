@@ -166,3 +166,7 @@ D:\Anna\product\Web\Web\obj\Debug\Web.csproj.CoreCompileInputs.cache
 D:\Anna\product\Web\Web\obj\Debug\Web.csproj.CopyComplete
 D:\Anna\product\Web\Web\obj\Debug\Web.dll
 D:\Anna\product\Web\Web\obj\Debug\Web.pdb
+D:\Anna\product\Web\Web\bin\PagedList.dll
+D:\Anna\product\Web\Web\bin\PagedList.Mvc.dll
+D:\Anna\product\Web\Web\bin\PagedList.xml
+D:\Anna\product\Web\Web\bin\PagedList.Mvc.xml

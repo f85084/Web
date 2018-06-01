@@ -1,11 +1,36 @@
 ﻿@using Library;
 @model IEnumerable<Library.Message>
+@{
+    ViewBag.Title = "留言板";
+}
 
 <div class="row">
+    <h2>留言板</h2>
     <div class="table-responsive">
         <div class="col-sm-7">
             <button type="button" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" value="建立新的留言" onclick="location.href='@Url.Action("Create", "Message")'">建立新的留言</button>
         </div>
+        <div class="col-sm-7">
+            <p>
+                @using (Html.BeginForm("Index3", "Message", FormMethod.Get))
+                {
+                    <b>搜尋:</b><br />
+                    @Html.RadioButton("searchBy", "UserName", true) <text>暱稱</text>
+                    @Html.RadioButton("searchBy", "Context") <text>內容</text><br />
+                    @Html.TextBox("searchText") <br />
+                    <input type="submit" value="搜尋" />
+                }
+            </p>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5">
+                        No matched records.
+                    </td>
+                </tr>
+            }
+        </div>
+
         <div class="col-sm-7">
             @foreach (Message item in Model)
             {
@@ -13,6 +38,7 @@
                     <div class="card-header">
                         @Html.Hidden("UserId", "2")
                         @Html.Hidden("UserName", "BB")
+
                         <ul>
                             @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
                         </ul>
@@ -24,13 +50,12 @@
                         </ul>
                         <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply")'" />
                     </div>
-
                     <div class="card-body">
                         <h5>回覆</h5>
                         @*@Html.Partial("_ReplyPartial", Model)*@
                     </div>
                 </div>
-              }
+            }
         </div>
     </div>
 </div>
