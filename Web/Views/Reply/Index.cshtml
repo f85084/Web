@@ -1,10 +1,7 @@
 ﻿@using Library;
 @model IEnumerable<Library.Reply>
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
+<h2>會員回覆列表</h2>
 <div class="row">
     <div class="table-responsive">
         <table class="table">
@@ -54,7 +51,7 @@
                             @Html.DisplayFor(modelItem => item.CreatDate)
                         </td>
                         <td>
-                            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Index", "Reply", new{ id = item.Id })'" />
+                            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply", new{ id = item.Id })'" />
                             <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? Id = @item.Id , Name = @item.UserId');" />
                         </td>
                     </tr>
@@ -65,20 +62,5 @@
         </table>
     </div>
 </div>
+<h2>會員回覆列表Partial</h2>
 @Html.Partial("_ReplyPartial", Model)
-
-@*@foreach (Reply item in Model)
-    {
-        <div class="card-title">
-            @Html.HiddenFor(modelItem => item.MessageId)
-            <ul>
-                @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
-            </ul>
-            <ul>
-                @Html.Label("model.Context", "留言內容") :  @Html.DisplayFor(modelItem => item.Context)
-            </ul>
-            <ul>
-                @Html.Label("model.CreatDate", "留言日期") : @Html.DisplayFor(modelItem => item.CreatDate)
-            </ul>
-        </div>
-    }*@

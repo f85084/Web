@@ -19,10 +19,11 @@ body {
 }
 
 .form-signin {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+    margin-bottom: 15px;
 }
 .form-signin .checkbox {
   font-weight: 400;
@@ -65,4 +66,10 @@ body {
     -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.center {
+    position: absolute;
+    top: 25%;
+    left: 30%;
 }

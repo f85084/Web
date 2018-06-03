@@ -31,7 +31,6 @@ namespace Library
                         user.Id = Convert.ToInt32(rdr["Id"]);
                         user.UserAccount = rdr["UserAccount"].ToString();
                         user.UserClass = Convert.ToByte(rdr["UserClass"]);
-                        //user.UserClass = rdr["UserClass"].ToString();
                         user.Email = rdr["Email"].ToString();
                         user.Password = rdr["Password"].ToString();
                         user.UserName = rdr["UserName"].ToString();

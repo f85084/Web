@@ -26,3 +26,7 @@ D:\Anna\product\Web\Library\bin\Debug\PagedList.dll
 D:\Anna\product\Web\Library\bin\Debug\PagedList.Mvc.dll
 D:\Anna\product\Web\Library\bin\Debug\PagedList.xml
 D:\Anna\product\Web\Library\bin\Debug\PagedList.Mvc.xml
+D:\Project\Web\Library\bin\Debug\PagedList.dll
+D:\Project\Web\Library\bin\Debug\PagedList.Mvc.dll
+D:\Project\Web\Library\bin\Debug\PagedList.xml
+D:\Project\Web\Library\bin\Debug\PagedList.Mvc.xml

@@ -170,3 +170,7 @@ D:\Anna\product\Web\Web\bin\PagedList.dll
 D:\Anna\product\Web\Web\bin\PagedList.Mvc.dll
 D:\Anna\product\Web\Web\bin\PagedList.xml
 D:\Anna\product\Web\Web\bin\PagedList.Mvc.xml
+D:\Project\Web\Web\bin\PagedList.dll
+D:\Project\Web\Web\bin\PagedList.Mvc.dll
+D:\Project\Web\Web\bin\PagedList.xml
+D:\Project\Web\Web\bin\PagedList.Mvc.xml
