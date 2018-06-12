@@ -1,19 +1,23 @@
 ﻿@using Library;
 @model IEnumerable<Library.Message>
+@{
+    ViewBag.Title = "留言板";
+}
 
-<h2>留言版</h2>
 <div class="row">
+    <h2>留言板</h2>
     <div class="table-responsive">
         <div class="col-sm-7">
             <button type="button" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" value="建立新的留言" onclick="location.href='@Url.Action("Create", "Message")'">建立新的留言</button>
         </div>
+
         <div class="col-sm-7">
             @foreach (Message item in Model)
             {
+                using (Html.BeginForm("Delete", "Message", new { id = item.Id }))
+                {
                 <div class="card">
                     <div class="card-header">
-                        @Html.Hidden("UserId", "2")
-                        @Html.Hidden("UserName", "BB")
                         <ul>
                             @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
                         </ul>
@@ -23,15 +27,15 @@
                         <ul>
                             @Html.Label("model.CreatDate", "留言日期") : @Html.DisplayFor(modelItem => item.CreatDate)
                         </ul>
-                        <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply")'" />
+                        <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply", new {  messageId = item.Id })'" />
                     </div>
-
                     <div class="card-body">
                         <h5>回覆</h5>
                         @*@Html.Partial("_ReplyPartial", Model)*@
                     </div>
                 </div>
-              }
+                }
+            }
         </div>
     </div>
 </div>

@@ -128,14 +128,9 @@
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Data\WebContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Message.cs" />
-    <Compile Include="Models\Reply.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\MessageReply.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +147,9 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Message\Index2.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Message\Edit.cshtml" />
     <Content Include="Views\Reply\Index2.cshtml" />
     <Content Include="Views\Message\Index3.cshtml" />
+    <Content Include="Views\Shared\_Identity.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -164,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj">

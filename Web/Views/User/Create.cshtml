@@ -1,72 +1,97 @@
-﻿@using Library.WebShare;
-
-@model Library.User
+﻿@model Library.User
 @{
+    int? UserClass = 1;
 }
 <div class="row">
     <div class="table-responsive">
         <h2>建立會員</h2>
 
         @using (Html.BeginForm("Create", "User"))
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.Label("UserAccount", "帳號", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.UserAccount)
-                    @*@Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label("UserAccount", "帳號", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserAccount)
+                        @*<h3>@ViewBag.Message</h3>*@
+                        @*@Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
+                @if (UserClass == 0 || UserClass == null)
+                {
+                    <div class="form-group">
+                        @Html.Label("UserClass", "會員類別", new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("UserClass", new List<SelectListItem>
+                                        {
+                                            new SelectListItem{Text = "管理員", Value = "0"},
+                                            new SelectListItem{Text = "一般使用者", Value = "1"}
+                                        }, "請選擇會員身分")
+                            @Html.ValidationMessageFor(model => model.UserClass, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.Hidden("UserClass", "1")
+                }
+                <div class="form-group">
+                    @Html.Label("Email", "會員Email", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email)
+                        @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Password", "會員密碼", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Password("Password", "", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-            <div class="form-group">
-                @Html.Label("UserClass", "會員類別", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("UserClass", new List<SelectListItem>
-                                    {
-                                        new SelectListItem{Text = "管理員", Value = "0"},
-                                        new SelectListItem{Text = "一般使用者", Value = "1"}
-                                    }, "請選擇會員身分")
-                    @Html.ValidationMessageFor(model => model.UserClass, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label("UserName", "會員名稱", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserName)
+                        @*@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @if (UserClass == 0)
+                {
+                    <div class="form-group">
+                        @Html.Label("Delete", "會員是否顯示", new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("Delete", new List<SelectListItem>
+                                        {
+                                            new SelectListItem{Text = "顯示", Value = "true"},
+                                            new SelectListItem{Text = "刪除", Value = "false"}
+                                        }, "會員狀態")
+                            @Html.ValidationMessageFor(model => model.Delete, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.Hidden("Delete", "true")
+                }
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="建立" class="btn btn-default" />
+                    </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                @Html.Label("Email", "會員Email", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Email)
-                    @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                </div>
+        }
+        @if (UserClass == 0)
+        {
+            <div>
+                @Html.ActionLink("回到列表", "Index")
             </div>
-
-            <div class="form-group">
-                @Html.Label("Password", "會員密碼", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Password("Password", "", new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("UserName", "會員名稱", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.UserName)
-                    @*@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="建立" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-}
-        <div>
-            @Html.ActionLink("回到列表", "Index")
-        </div>
+        }
     </div>
 </div>

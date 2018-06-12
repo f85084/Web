@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Web.Data;
+//using Web.Data;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Net;
-using User = Web.Models.User;
+//using User = Web.Models.User;
 using System.Web.Security;
 
 namespace Web.Controllers
@@ -20,27 +20,30 @@ namespace Web.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Login(Library.User login)
-        {
-            if (!ModelState.IsValid)
-            {
-                FormsAuthentication.RedirectFromLoginPage(login.UserAccount,false);
+        //    [HttpPost]
+        //    public ActionResult Login(Library.User login)
+        //    {
+        //        UserWeb userWeb = new UserWeb();
+        //        List<Library.User> users = userWeb.Users.ToList();
 
-                return RedirectToAction("Index");
-            }
+        //        if (!ModelState.IsValid)
+        //        {
+        //            FormsAuthentication.RedirectFromLoginPage(login.UserAccount, false);
 
-            //UserWeb userWeb = new UserWeb();
-            return View("Index","Message");
-        }
+        //            return RedirectToAction("Index");
+        //        }
+
+        //        //UserWeb userWeb = new UserWeb();
+        //        return View("Index", "Message");
+        //    }
+        //}
+
+        //private bool LoginCheck(Library.User login)
+        //{
+        //    return (
+        //        login.UserAccount == "test@gmail.com" &&
+        //        login.Password == "123"
+        //        );
     }
-
-    //private bool LoginCheck(Library.User login)
-    //{
-    //    return (
-    //        login.UserAccount == "test@gmail.com" &&
-    //        login.Password == "123"
-    //        );
-    //}
 
 }

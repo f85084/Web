@@ -4,7 +4,9 @@
 @model Library.User
 
 @{
-    ViewBag.Title = "登入";
+                /**/
+
+                ViewBag.Title = "登入";
 }
 <!-- Custom styles for this template -->
 @*<link href="~/Content/signin.css" rel="stylesheet" type="text/css" />*@
@@ -30,8 +32,8 @@
             </div>
         </div>
         <div class="form-group">
-             <input type="submit" value="登入" class="btn btn-primary btn-sm center" style="margin-top:5px ;margin-bottom:5px;"  />
-                @*<input type="submit" value="登入" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" />*@
+            <input type="submit" value="登入" class="btn btn-primary btn-sm center" style="margin-top:5px ;margin-bottom:5px;" />
+            @*<input type="submit" value="登入" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" />*@
         </div>
     }
     @*<div class="col-md-offset-2 col-md-10">
@@ -39,6 +41,6 @@
     @*<button type="button" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" value="註冊" onclick="location.href='@Url.Action("Create", "User")'">註冊</button>*@
     @* </div>*@
 
-        <input type="button" class="btn btn-primary btn-sm " style="margin-top:5px ;margin-bottom:10px;" value="註冊" onclick="location.href='@Url.Action("Create", "User")'">
+    <input type="button" class="btn btn-primary btn-sm " style="margin-top:5px ;margin-bottom:10px;" value="註冊" onclick="location.href='@Url.Action("Create", "User")'">
 
 </div>

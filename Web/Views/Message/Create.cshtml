@@ -1,15 +1,26 @@
 ﻿@model Library.Message
 @{
+    int? UserId = 0;
+    string UserName = "666";
 }
 <div class="row">
     <h2>新增留言</h2>
     @using (Html.BeginForm("Create", "Message"))
     {
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
         <div class="form-horizontal">
-            @Html.Hidden("UserId", "8")
-            @Html.Hidden("UserName", "A888")
+            @if ((UserId == 0) || (UserId == null))
+            {
+                @Html.Hidden("UserId", UserId)
+                @Html.Hidden("UserName", "匿名")
+            }
+            else
+            {
+                @Html.Hidden("UserId", UserId)
+                @Html.Hidden("UserName", UserName)
+            }
+
             <div class="form-group">
                 @Html.Label("Context", "內容", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -17,6 +28,7 @@
                     @Html.ValidationMessageFor(model => model.Context, "", new { @class = "text-danger" })
                 </div>
             </div>
+                 @Html.Hidden("Delete", "true")
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="留言" class="btn btn-default  " />

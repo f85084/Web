@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Library;
 using System.Web.Mvc;
-using Web.Data;
+//using Web.Data;
 using System.Data.Entity;
-using Reply = Web.Models.Reply;
+//using Reply = Web.Models.Reply;
 
 
 namespace Web.Controllers
@@ -18,22 +18,25 @@ namespace Web.Controllers
         public ActionResult Index()
         {
             ReplyWeb replyWeb = new ReplyWeb();
-            List<Library.Reply> replys = replyWeb.Replys.ToList();
-            return View(replys);
+            //List<Library.Reply> replys = replyWeb.Replys.ToList();
+            return View(replyWeb.GetReply());
             //return View("_ReplyPartial", replys);
+
         }
         #endregion
 
         #region 建立
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int? messageId)
         {
+            ViewBag.MessageId = messageId;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Library.Reply reply)
+        public ActionResult Create(Library.Reply reply )
         {
+
             if (!ModelState.IsValid)
             {
                 return View("Create");
@@ -41,7 +44,7 @@ namespace Web.Controllers
 
             ReplyWeb replyWeb = new ReplyWeb();
             replyWeb.AddReply(reply);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index" , "Message");
         }
         #endregion
 
@@ -58,16 +61,16 @@ namespace Web.Controllers
 
 
         #region 測試回覆Partial
-        [HttpGet]
-        public ActionResult _ReplyPartial(int messageId)
-        {
-            ReplyWeb replyWeb = new ReplyWeb();
-            List<Library.Reply> replys = replyWeb.Replys.ToList();
-            replys = replyWeb.Replys
-                    .Where(x => x.MessageId == messageId)
-                    .ToList();
-            return View("_ReplyPartial", replys);
-        }
+        //[HttpGet]
+        //public ActionResult _ReplyPartial(int messageId)
+        //{
+        //    ReplyWeb replyWeb = new ReplyWeb();
+        //    List<Library.Reply> replys = replyWeb.GetReply().ToList();
+        //    replys = replyWeb.Replys
+        //            .Where(x => x.MessageId == messageId)
+        //            .ToList();
+        //    return View("_ReplyPartial", replys);
+        //}
         #endregion
 
     }

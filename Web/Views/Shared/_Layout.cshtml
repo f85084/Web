@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    int? Id = 0 ;
+    int? UserClass = 1;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -24,15 +28,24 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @if ((UserClass == 0))
+                    {
+                        <li>@Html.ActionLink("會員資料", "Index", "User")</li>
+                        <li>@Html.ActionLink("會員留言", "Index3", "Message")</li>
+                    }
 
-                    <li>@Html.ActionLink("會員資料", "Index", "User")</li>
-                    <li>@Html.ActionLink("會員留言", "Index", "Reply")</li>
+                    @if (((Id != 0) && (UserClass != 0) && (UserClass != null)))
+                    {
+                        <li>@Html.ActionLink("基本資料", "Edit", "User", new { Id = Id }, "")</li>
+                    }
 
-                    <li>@Html.ActionLink("基本資料", "Edit", "User", new { Id = 1 }, "")</li>
-                    <li>@Html.ActionLink("留言", "Index3", "Message")</li>
-                    <li>@Html.ActionLink("Partial", "Index2", "Message")</li>
+                    @*<li>@Html.ActionLink("留言", "Index3", "Message")</li>
+                        <li>@Html.ActionLink("Partial", "Index2", "Message")</li>*@
 
-                    <li>@Html.ActionLink("登入", "Index", "Login")</li>
+                    @if ((Id == 0) || (Id == null))
+                    {
+                        <li>@Html.ActionLink("登入", "Index", "Login")</li>
+                    }
                 </ul>
                 @*@Html.Partial("_LoginPartial")*@
             </div>

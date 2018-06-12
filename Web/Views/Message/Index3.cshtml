@@ -1,63 +1,59 @@
 ﻿@using Library;
+@*@using Library.Reply;*@
 @model IEnumerable<Library.Message>
-@{
-    ViewBag.Title = "留言板";
-}
 
+<h2>會員留言列表</h2>
 <div class="row">
-    <h2>留言板</h2>
     <div class="table-responsive">
-        <div class="col-sm-7">
-            <button type="button" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" value="建立新的留言" onclick="location.href='@Url.Action("Create", "Message")'">建立新的留言</button>
-        </div>
-        <div class="col-sm-7">
-            <p>
-                @using (Html.BeginForm("Index3", "Message", FormMethod.Get))
-                {
-                    <b>搜尋:</b><br />
-                    @Html.RadioButton("searchBy", "UserName", true) <text>暱稱</text>
-                    @Html.RadioButton("searchBy", "Context") <text>內容</text><br />
-                    @Html.TextBox("searchText") <br />
-                    <input type="submit" value="搜尋" />
-                }
-            </p>
-            @if (!Model.Any())
-            {
-                <tr>
-                    <td colspan="5">
-                        No matched records.
-                    </td>
-                </tr>
-            }
-        </div>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.Label("model.Id", "會員編號")
+                </th>
+                <th>
+                    @Html.Label("model.UserId", "會員帳號")
+                </th>
+                <th>
+                    @Html.Label("model.UserName", "會員暱稱")
+                </th>
+                <th>
+                    @Html.Label("model.Context", "留言內容")
+                </th>
+                <th>
+                    @Html.Label("model.CreatDate", "留言日期")
+                </th>
+                <th></th>
+            </tr>
 
-        <div class="col-sm-7">
             @foreach (Message item in Model)
             {
-                <div class="card">
-                    <div class="card-header">
-                        @Html.Hidden("UserId", "2")
-                        @Html.Hidden("UserName", "BB")
-
-                        <ul>
-                            @Html.Label("model.UserName", "會員暱稱")  : @Html.DisplayFor(modelItem => item.UserName)
-                        </ul>
-                        <ul>
-                            @Html.Label("model.Context", "留言內容") :  @Html.DisplayFor(modelItem => item.Context)
-                        </ul>
-                        <ul>
-                            @Html.Label("model.CreatDate", "留言日期") : @Html.DisplayFor(modelItem => item.CreatDate)
-                        </ul>
-                        <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply")'" />
-                    </div>
-                    <div class="card-body">
-                        <h5>回覆</h5>
-                        @*@Html.Partial("_ReplyPartial", Model)*@
-                    </div>
-                </div>
+                using (Html.BeginForm("Delete", "Message", new { id = item.Id }))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Context)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatDate)
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply", new{ id = item.Id })'" />
+                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? Id = @item.Id , Name = @item.UserId');" />
+                        </td>
+                    </tr>
+                }
             }
-        </div>
+
+
+        </table>
     </div>
 </div>
-
-
