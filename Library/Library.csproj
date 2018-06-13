@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBServer\DBConnection.cs" />
+    <Compile Include="DBServer\SPName.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="DBServer\MessageWeb.cs" />
     <Compile Include="Models\Reply.cs" />

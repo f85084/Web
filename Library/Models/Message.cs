@@ -23,12 +23,14 @@ namespace Library
         /// <summary>
         /// 留言名稱
         /// </summary>
+        [Display(Name = "名稱")]
+        [Required(ErrorMessage = "請輸入名稱")]
         public string UserName { get; set; }
 
         /// <summary>
         /// 留言內容
         /// </summary>
-        [Display(Name = "留言內容")]
+        [Display(Name = "內容")]
         [Required(ErrorMessage = "請輸入留言內容")]
         [StringLength(100, ErrorMessage = "留言內容不可超過100字元")]
         public string Context { get; set; }

@@ -39,7 +39,7 @@
                     @Html.Hidden("UserClass", "1")
                 }
                 <div class="form-group">
-                    @Html.Label("Email", "會員Email", new { @class = "control-label col-md-2" })
+                    @Html.Label("Email", "信箱", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Email)
                         @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.Label("Password", "會員密碼", new { @class = "control-label col-md-2" })
+                    @Html.Label("Password", "密碼", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.Password("Password", "", new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.Label("UserName", "會員名稱", new { @class = "control-label col-md-2" })
+                    @Html.Label("UserName", "名稱", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.UserName)
                         @*@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })*@
@@ -65,7 +65,7 @@
                 @if (UserClass == 0)
                 {
                     <div class="form-group">
-                        @Html.Label("Delete", "會員是否顯示", new { @class = "control-label col-md-2" })
+                        @Html.Label("Delete", "刪除", new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DropDownList("Delete", new List<SelectListItem>
                                         {

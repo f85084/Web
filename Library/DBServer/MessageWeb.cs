@@ -6,29 +6,21 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using Library.DBServer;
 
 namespace Library
 {
     public class MessageWeb
     {
-        string connectionString =
-        ConfigurationManager.ConnectionStrings["WebContext"].ConnectionString;
 
-        public IEnumerable<Message> Messages
-        {
-            get;
-            set;
-        }
-
-        DateTime dt = DateTime.Now; //現在時間 
 
         #region 讀取
         public IEnumerable<Message> GetMessages()
         {
             List<Message> messages = new List<Message>();
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_GetMessage", con);
+                SqlCommand cmd = new SqlCommand(SPName.Message.Message_Get, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -46,15 +38,78 @@ namespace Library
             }
             return messages;
         }
+
+
+        public IEnumerable<MessageReply> GetMessageReplys()
+        {
+            List<MessageReply> result = new List<MessageReply>();
+
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
+            {
+                string commend = @"select * 
+from Message
+left outer join Reply 
+on Message.Id = Reply.MessageId
+order by Message.Id";
+                SqlCommand cmd = new SqlCommand(commend, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                int currentID = 0;
+                MessageReply item = null;
+                while (dr.Read())
+                {
+                    if (currentID == 0 || int.Parse(dr[0].ToString()) != currentID)
+                    {
+                        Message msg = new Message()
+                        {
+                            Id = Convert.ToInt32(dr[0]),
+                            UserName = dr[2].ToString(),
+                            Context = dr[3].ToString(),
+                            CreatDate = Convert.ToDateTime(dr[4].ToString())
+                        };
+                        item = new MessageReply();
+                        item.Messages = msg;
+                        item.ReplyList = new List<Reply>();
+                        if (dr[7] != DBNull.Value)
+                        {
+
+                            Reply reply = new Reply()
+                            {
+                                UserName = dr[9].ToString(),
+                                Context = dr[10].ToString(),
+                                CreatDate = Convert.ToDateTime(dr[11].ToString())
+                            };
+                            item.ReplyList.Add(reply);
+                        }
+
+                        result.Add(item);
+                        currentID = msg.Id;
+                    }
+                    else
+                    {
+                        item.ReplyList.Add(new Reply
+                        {
+                            UserName = dr[9].ToString(),
+                            Context = dr[10].ToString(),
+                            CreatDate = Convert.ToDateTime(dr[11].ToString())
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
         #endregion
 
 
         #region 新增留言
         public void AddMessage(Message message)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_AddMessage", con)
+                SqlCommand cmd = new SqlCommand(SPName.Message.Message_Add, con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -83,7 +138,7 @@ namespace Library
                 SqlParameter sqlParamCreatDate = new SqlParameter
                 {
                     ParameterName = "@CreatDate",
-                    Value = dt
+                    Value = DateTime.Now
                 };
                 cmd.Parameters.Add(sqlParamCreatDate);
 
@@ -103,9 +158,9 @@ namespace Library
         #region 更新留言
         public void SaveMessage(Message message)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_SaveMessage", con)
+                SqlCommand cmd = new SqlCommand(SPName.Message.Message_Update, con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -135,7 +190,7 @@ namespace Library
                 SqlParameter sqlParamCreatDate = new SqlParameter
                 {
                     ParameterName = "@CreatDate",
-                    Value = dt
+                    Value = DateTime.Now
                 };
                 cmd.Parameters.Add(sqlParamCreatDate);
 
@@ -148,9 +203,9 @@ namespace Library
         #region 刪除
         public void DeleteMessage(int id)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("spDeleteMessage", con);
+                SqlCommand cmd = new SqlCommand(SPName.Message.Message_Delete, con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter sqlParamId = new SqlParameter

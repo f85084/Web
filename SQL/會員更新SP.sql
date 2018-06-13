@@ -1,13 +1,9 @@
 -- =============================================
-
--- Author: Anna Chen
-
+-- Author:		Anna Chen
 -- Create date: 2018/06/01
-
--- Description: 更新會員資料
-
+-- Description:	編輯會員資料
 -- =============================================
-CREATE PROCEDURE msp_SaveUser
+CREATE PROCEDURE usp_User_Update
     (
 	  @Id int,
       @UserAccount NVARCHAR(50), 
@@ -34,3 +30,4 @@ AS
         WHERE   Id = @Id; 
     END; 
 GO
+

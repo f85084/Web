@@ -33,7 +33,7 @@ namespace Library
         /// <summary>
         /// 會員信箱
         /// </summary>
-        [Display(Name = "會員信箱")]
+        [Display(Name = "信箱")]
         [RegularExpression(WebShareConst.EmailRegularExpression, ErrorMessage = WebShareConst.EmailNotValid)]
         [Required(ErrorMessage = "請輸入信箱")]
         public string Email { get; set; }
@@ -41,14 +41,14 @@ namespace Library
         /// <summary>
         /// 會員密碼
         /// </summary>
-        [Display(Name = "會員密碼")]
+        [Display(Name = "密碼")]
         [Required(ErrorMessage = "請輸入密碼")]
         public string Password { get; set; }
 
         /// <summary>
         /// 會員名稱
         /// </summary>
-        [Display(Name = "會員名稱")]
+        [Display(Name = "名稱")]
         public string UserName { get; set; }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Library
         /// <summary>
         /// 刪除會員
         /// </summary>
-        [Display(Name = "會員狀態")]
+        [Display(Name = "狀態")]
         public bool Delete { get; set; }
     }
 }

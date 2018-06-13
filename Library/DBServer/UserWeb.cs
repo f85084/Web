@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using Library.DBServer;
 
 namespace Library
 {
     public class UserWeb
     {
-        string connectionString =
-    ConfigurationManager.ConnectionStrings["WebContext"].ConnectionString;
-
         public IEnumerable<User> user
         {
             get;
@@ -21,15 +19,15 @@ namespace Library
         }
         public string UserAccount { get; set; }
 
-        DateTime dt = DateTime.Now; //現在時間 
+
 
         #region 讀取
         public IEnumerable<User> GetUsers()
         {
             List<User> users = new List<User>();
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_GetUser", con);
+                SqlCommand cmd = new SqlCommand(SPName.User.User_Get, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -57,9 +55,9 @@ namespace Library
         public void AddUser(User user)
         {
 
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_AddUser", con)
+                SqlCommand cmd = new SqlCommand(SPName.User.User_Add, con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -102,14 +100,14 @@ namespace Library
                 SqlParameter sqlParamCreatDate = new SqlParameter
                 {
                     ParameterName = "@CreatDate",
-                    Value = dt
+                    Value = DateTime.Now
                 };
                 cmd.Parameters.Add(sqlParamCreatDate);
 
                 SqlParameter sqlParamMofiyDate = new SqlParameter
                 {
                     ParameterName = "@MofiyDate",
-                    Value = dt
+                    Value = DateTime.Now
                 };
                 cmd.Parameters.Add(sqlParamMofiyDate);
 
@@ -130,9 +128,9 @@ namespace Library
         public void SaveUser(User user)
         {
 
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_SaveUser", con)
+                SqlCommand cmd = new SqlCommand(SPName.User.User_Update, con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -182,14 +180,14 @@ namespace Library
                 SqlParameter sqlParamCreatDate = new SqlParameter
                 {
                     ParameterName = "@CreatDate",
-                    Value = dt
+                    Value = DateTime.Now
                 };
                 cmd.Parameters.Add(sqlParamCreatDate);
 
                 SqlParameter sqlParamMofiyDate = new SqlParameter
                 {
                     ParameterName = "@MofiyDate",
-                    Value = dt
+                    Value = DateTime.Now
                 };
                 cmd.Parameters.Add(sqlParamMofiyDate);
 
@@ -210,9 +208,9 @@ namespace Library
         public void DeleteUser(int id)
         {
 
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_DeleteUser", con);
+                SqlCommand cmd = new SqlCommand(SPName.User.User_Delete, con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter sqlParamId = new SqlParameter

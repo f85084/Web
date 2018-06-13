@@ -6,27 +6,19 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using Library.DBServer;
 
 namespace Library
 {
     public class ReplyWeb
     {
-        string connectionString =
-        ConfigurationManager.ConnectionStrings["WebContext"].ConnectionString;
-
-        public IEnumerable<Reply> Replys
-        {
-            get;
-            set;
-        }
-
         public IEnumerable<Reply> GetReply()
         {
 
             List<Reply> replys = new List<Reply>();
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_GetReply", con);
+                SqlCommand cmd = new SqlCommand(SPName.Reply.Reply_Get, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -46,14 +38,13 @@ namespace Library
             return replys;
         }
 
-        DateTime dt = DateTime.Now; //現在時間 
+
 
         public void AddReply(Reply reply)
         {
-
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
-                SqlCommand cmd = new SqlCommand("msp_AddReply", con)
+                SqlCommand cmd = new SqlCommand(SPName.Reply.Reply_Add, con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -89,7 +80,7 @@ namespace Library
                 SqlParameter sqlParamCreatDate = new SqlParameter
                 {
                     ParameterName = "@CreatDate",
-                    Value = dt
+                    Value = DateTime.Now
                 };
                 cmd.Parameters.Add(sqlParamCreatDate);
 
@@ -104,52 +95,6 @@ namespace Library
                 cmd.ExecuteNonQuery();
             }
         }
-
-        //public void SaveMessage(Message message)
-        //{
-        //    string connectionString =
-        //        ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
-
-        //    using (SqlConnection con = new SqlConnection(connectionString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand("spSaveMessage", con)
-        //        {
-        //            CommandType = CommandType.StoredProcedure
-        //        };
-
-
-        //        SqlParameter sqlParamUserId = new SqlParameter
-        //        {
-        //            ParameterName = "@UserId",
-        //            Value = message.UserId
-        //        };
-        //        cmd.Parameters.Add(sqlParamUserId);
-
-        //        SqlParameter sqlParamUserName = new SqlParameter
-        //        {
-        //            ParameterName = "@UserName",
-        //            Value = message.UserName
-        //        };
-        //        cmd.Parameters.Add(sqlParamUserName);
-
-        //        SqlParameter sqlParamContext = new SqlParameter
-        //        {
-        //            ParameterName = "@Context",
-        //            Value = message.Context
-        //        };
-        //        cmd.Parameters.Add(sqlParamContext);
-
-        //        SqlParameter sqlParamCreatDate = new SqlParameter
-        //        {
-        //            ParameterName = "@CreatDate",
-        //            Value = dt
-        //        };
-        //        cmd.Parameters.Add(sqlParamCreatDate);
-
-        //        con.Open();
-        //        cmd.ExecuteNonQuery();
-        //    }
-        //}
 
         //public void DeleteMessage(int id)
         //{

@@ -10,13 +10,13 @@ namespace Library
 {
     public class MessageReply
     {
-        public Message Message
+        public Message Messages
         {
             get;
             set;
         }
 
-        public List<Reply> Replys
+        public List<Reply> ReplyList
         {
             get;
             set;

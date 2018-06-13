@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Library;
 using System.Web.Mvc;
-//using Web.Data;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using PagedList;
+
 
 namespace Web.Controllers
 {
@@ -16,33 +16,68 @@ namespace Web.Controllers
     {
         MessageWeb messageWeb = new MessageWeb();
 
-        #region 頁面取得
-        public ActionResult Index(string searchBy, string searchText)
+        #region 留言首頁取得 
+        /// <summary>
+        /// 留言首頁取得 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
         {
+            List<MessageReply> model = messageWeb.GetMessageReplys().ToList();
+            
+            //List<Library.Message> messages = messageWeb.GetMessages().ToList();
+            //List<Reply> replys = new ReplyWeb().GetReply().ToList();
 
-            List<Library.Message> messages = messageWeb.GetMessages().ToList();
-            messages = messageWeb.GetMessages()
-                    .Where(x => x.Delete == true)
-                    .ToList();
+            //foreach (var msg in messages)
+            //{
+            //    MessageReply item = new MessageReply();
+            //    item.Messages = msg;
+            //    item.ReplyList = replys.Where(r => r.MessageId == msg.Id).ToList();
+            //    model.Add(item);
+            //}
 
-            return View(messages);
+            //messages = messageWeb.GetMessages()
+            //        .Where(x => !x.Delete)
+            //        .ToList();
+
+            return View(model);
         }
         #endregion
 
-        #region 頁面取得 Index3
+        #region 管理員留言首頁取得 
+        /// <summary>
+        /// 管理員留言首頁取得
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult Index3()
+        public ActionResult ManageIndex()
         {
             //List<MessageReply> data = new List<MessageReply>();
             return View(messageWeb.GetMessages());
         }
         #endregion
 
-        #region 建立
+        #region 建立留言
+        /// <summary>
+        /// 建立留言
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            Message model = new Message();
+            //bool isLogin = true;
+
+            //if (isLogin)
+            //{
+            //}
+            //else
+            //{
+            //    model.UserId = 0;
+            //    model.UserName = "匿名";
+            //}
+
+            return View(model);
         }
 
         [HttpPost]
@@ -59,33 +94,17 @@ namespace Web.Controllers
         #endregion
 
         #region 刪除
+        /// <summary>
+        /// 刪除留言
+        /// </summary>
+        /// <param name="id">留言id</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Delete(int id)
         {
             MessageWeb messageWeb = new MessageWeb();
             messageWeb.DeleteMessage(id);
             return RedirectToAction("Index");
-        }
-        #endregion
-
-        #region 測試回覆Partial
-        [HttpGet]
-        public ActionResult Index2(int? messageId)
-        {
-            ViewBag.MessageId = messageId;
-            ReplyWeb replyWeb = new ReplyWeb();
-            List<MessageReply> data = new List<MessageReply>();
-            List<Library.Reply> replys = replyWeb.GetReply().ToList();
-            List<MessageReply> test = data.ToList();
-            //replys = replyWeb.GetReply()
-            //        .Where(x => x.MessageId == messageId)
-            //        .ToList();
-            //return View("_ReplyPartial", replys);
-
-            replys = replyWeb.GetReply()
-                    .Where(x => x.MessageId == messageId)
-                    .ToList();
-            return View("_ReplyPartial", replys);
         }
         #endregion
 

@@ -1,13 +1,9 @@
 -- =============================================
-
--- Author: Anna Chen
-
+-- Author:		Anna Chen
 -- Create date: 2018/06/01
-
--- Description: 新增會員資料
-
+-- Description:	新增會員資料
 -- =============================================
-CREATE PROCEDURE msp_AddUser
+CREATE PROCEDURE usp_User_Add
     (
       @UserAccount NVARCHAR(50) , 
       @UserClass tinyint , 

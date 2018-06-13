@@ -17,17 +17,24 @@
             @if ((UserId == 0) || (UserId == null))
             {
                 @Html.Hidden("UserId", UserId)
-                @Html.Hidden("UserName", "匿名")
             }
             else
             {
                 @Html.Hidden("UserId", UserId)
-                @Html.Hidden("UserName", UserName)
             }
+
+            <div class="form-group">
+                @Html.Label("UserName", "名稱", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.Context, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
             <div class="form-group">
                 @Html.Label("Context", "內容", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextArea("Context", " ", 6, 60, new { style = "border: solid 1px #ccc; border-radius: 0.25rem; " })
+                    @Html.TextArea("Context", "", 6, 60, new { style = "border: solid 1px #ccc; border-radius: 0.25rem; " })
                     @Html.ValidationMessageFor(model => model.Context, "", new { @class = "text-danger" })
                 </div>
             </div>

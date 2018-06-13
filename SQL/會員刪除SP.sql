@@ -1,16 +1,12 @@
 -- =============================================
-
--- Author: Anna Chen
-
+-- Author:		Anna Chen
 -- Create date: 2018/06/01
-
--- Description: 刪除會員資料
-
+-- Description:	刪除會員資料
 -- =============================================
-CREATE PROCEDURE msp_DeleteUser ( @Id int )
+CREATE PROCEDURE usp_User_Delete ( @Id int )
 AS
     BEGIN
-        DELETE  FROM "User" 
+        DELETE  FROM [User] 
         WHERE   Id = @Id;
     END;
 GO

@@ -1,13 +1,9 @@
 -- =============================================
-
--- Author: Anna Chen
-
+-- Author:		Anna Chen
 -- Create date: 2018/06/01
-
--- Description: 新增回覆資料
-
+-- Description:	新增回覆資料
 -- =============================================
-CREATE PROCEDURE msp_AddReply
+CREATE PROCEDURE usp_Reply_Add
     (
       @UserId INT ,
       @MessageId INT ,

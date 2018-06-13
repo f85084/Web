@@ -1,16 +1,14 @@
 -- =============================================
-
--- Author: Anna Chen
-
+-- Author:		Anna Chen
 -- Create date: 2018/06/01
-
--- Description: 讀取會員資料
-
+-- Description:	讀取會員資料
 -- =============================================
-CREATE PROCEDURE msp_GetUser
+CREATE PROCEDURE usp_User_Get
 AS
     BEGIN
-        SELECT  *
-        FROM    "User";
+		SET NOCOUNT ON;
+
+        SELECT  [Id],[UserAccount],[UserClass] ,[Email],[Password],[UserName],[CreatDate],[MofiyDate],[Delete]
+        FROM    [User];
     END;
 GO 

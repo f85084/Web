@@ -1,46 +1,50 @@
-﻿@*@model IEnumerable<Library.User>*@
-@using Library.WebShare;
+﻿@*@model IEnumerable<Library.User>
+    *@
+    @using Library.WebShare;
+    @model Library.User
 
-@model Library.User
+    @{
 
-@{
-                /**/
-
-                ViewBag.Title = "登入";
-}
-<!-- Custom styles for this template -->
-@*<link href="~/Content/signin.css" rel="stylesheet" type="text/css" />*@
-<div class="row">
-    <h1>會員登入</h1>
+    ViewBag.Title = "登入";
+    }
+    <h2>登入</h2>
     @using (Html.BeginForm("Login", "User"))
     {
-        @Html.HiddenFor(model => model.Id)
-        <div class="form-group">
-            @Html.Label("UserAccount", "帳號", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAccount)
-                @*@Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.Label("Password", "會員密碼", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.Password("Password", "")
-                @*@Html.Password("Password", "", new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="登入" class="btn btn-primary btn-sm center" style="margin-top:5px ;margin-bottom:5px;" />
-            @*<input type="submit" value="登入" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" />*@
-        </div>
+    <table>
+        <tr>
+            <td>
+                @Html.HiddenFor(model => model.Id)
+                @Html.LabelFor(model => model.UserAccount)
+            </td>
+            <td></td>
+            <td>
+                @Html.TextBoxFor(model => model.UserAccount)
+                @Html.ValidationMessageFor(model => model.UserAccount)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Password)
+            </td>
+            <td></td>
+            <td>
+                @Html.PasswordFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @Html.ValidationSummary()
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="form-group">
+                    <input type="submit" value="登入" class="btn btn-primary btn-sm center" style="margin-top:5px ;margin-bottom:5px;" />
+                    <br />
+                    <input type="button" class="btn btn-primary btn-sm " style="margin-top:5px ;margin-bottom:10px;" value="註冊" onclick="location.href='@Url.Action("Create", "User" )'">
+                </div>
+            </td>
+        </tr>
+    </table>
     }
-    @*<div class="col-md-offset-2 col-md-10">
-        <button type="button" class="btn btn-primary btn-sm " value="註冊" onclick="location.href='@Url.Action("Create", "User")'">註冊</button>*@
-    @*<button type="button" class="btn btn-primary btn-sm " style="margin-top:10px ;margin-bottom:10px;" value="註冊" onclick="location.href='@Url.Action("Create", "User")'">註冊</button>*@
-    @* </div>*@
-
-    <input type="button" class="btn btn-primary btn-sm " style="margin-top:5px ;margin-bottom:10px;" value="註冊" onclick="location.href='@Url.Action("Create", "User")'">
-
-</div>
