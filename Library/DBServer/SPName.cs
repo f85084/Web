@@ -68,5 +68,14 @@ namespace Library.DBServer
             internal const string Reply_Add = "usp_Reply_Add";
         }
 
+        public struct MessageReply
+        {
+            /// <summary>
+            /// 取得留言回覆資料
+            /// </summary>
+            internal const string MessageRely_Get = "usp_MessageRely_Get";
+
         }
+
+    }
 }

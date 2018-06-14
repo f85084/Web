@@ -23,23 +23,7 @@ namespace Web.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            List<MessageReply> model = messageWeb.GetMessageReplys().ToList();
-            
-            //List<Library.Message> messages = messageWeb.GetMessages().ToList();
-            //List<Reply> replys = new ReplyWeb().GetReply().ToList();
-
-            //foreach (var msg in messages)
-            //{
-            //    MessageReply item = new MessageReply();
-            //    item.Messages = msg;
-            //    item.ReplyList = replys.Where(r => r.MessageId == msg.Id).ToList();
-            //    model.Add(item);
-            //}
-
-            //messages = messageWeb.GetMessages()
-            //        .Where(x => !x.Delete)
-            //        .ToList();
-
+            List<MessageReply> model = messageWeb.GetMessageReplys().ToList();       
             return View(model);
         }
         #endregion
@@ -53,7 +37,7 @@ namespace Web.Controllers
         public ActionResult ManageIndex()
         {
             //List<MessageReply> data = new List<MessageReply>();
-            return View(messageWeb.GetMessages());
+            return View(messageWeb.GetMessageReplys());
         }
         #endregion
 
@@ -66,16 +50,15 @@ namespace Web.Controllers
         public ActionResult Create()
         {
             Message model = new Message();
-            //bool isLogin = true;
+            bool isLogin = true;
 
-            //if (isLogin)
-            //{
-            //}
-            //else
-            //{
-            //    model.UserId = 0;
-            //    model.UserName = "匿名";
-            //}
+            if (isLogin)
+            {
+            }
+            else
+            {
+                model.UserId = 0;
+            }
 
             return View(model);
         }
