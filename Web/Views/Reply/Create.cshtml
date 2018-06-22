@@ -3,7 +3,6 @@
     @model IEnumerable<Library.Reply>*@
 @{
     int? UserId = 0;
-    string UserName = "三三三三";
     int? UserClass = 1;
 }
 
@@ -27,7 +26,7 @@
                 @Html.Label("UserName", "名稱", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.UserName)
-                    @Html.ValidationMessageFor(model => model.Context, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                 </div>
             </div>
 

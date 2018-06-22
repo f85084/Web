@@ -98,6 +98,8 @@ namespace Library
                 SqlParameter sqlParamUserName = new SqlParameter
                 {
                     ParameterName = "@UserName",
+                    SqlDbType= SqlDbType.NVarChar,
+                    Size = 20,
                     Value = message.UserName
                 };
                 cmd.Parameters.Add(sqlParamUserName);
@@ -105,6 +107,8 @@ namespace Library
                 SqlParameter sqlParamContext = new SqlParameter
                 {
                     ParameterName = "@Context",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 200,
                     Value = message.Context
                 };
                 cmd.Parameters.Add(sqlParamContext);

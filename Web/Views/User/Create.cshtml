@@ -6,24 +6,25 @@
     <div class="table-responsive">
         <h2>建立會員</h2>
 
+
+
         @using (Html.BeginForm("Create", "User"))
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    @Html.Label("UserAccount", "帳號", new { @class = "control-label col-md-2" })
+                    @Html.Label("UserAccount", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.UserAccount)
-                        @*<h3>@ViewBag.Message</h3>*@
-                        @*@Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @class = "form-control" } })*@
+                        <span style="color:red">@ViewBag.Msg</span>
                         @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 @if (UserClass == 0 || UserClass == null)
                 {
                     <div class="form-group">
-                        @Html.Label("UserClass", "會員類別", new { @class = "control-label col-md-2" })
+                        @Html.Label("UserClass", new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DropDownList("UserClass", new List<SelectListItem>
                                         {
@@ -39,7 +40,7 @@
                     @Html.Hidden("UserClass", "1")
                 }
                 <div class="form-group">
-                    @Html.Label("Email", "信箱", new { @class = "control-label col-md-2" })
+                    @Html.Label("Email", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Email)
                         @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
@@ -47,15 +48,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.Label("Password", "密碼", new { @class = "control-label col-md-2" })
+                    @Html.Label("Password", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.Password("Password", "", new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    @Html.Label("RePassword", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Password("RePassword", "", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.RePassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
                 <div class="form-group">
-                    @Html.Label("UserName", "名稱", new { @class = "control-label col-md-2" })
+                    @Html.Label("UserName", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.UserName)
                         @*@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })*@
@@ -65,12 +74,12 @@
                 @if (UserClass == 0)
                 {
                     <div class="form-group">
-                        @Html.Label("Delete", "刪除", new { @class = "control-label col-md-2" })
+                        @Html.Label("Delete", new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DropDownList("Delete", new List<SelectListItem>
                                         {
-                                            new SelectListItem{Text = "顯示", Value = "true"},
-                                            new SelectListItem{Text = "刪除", Value = "false"}
+                                            new SelectListItem{Text = "顯示", Value = "false"},
+                                            new SelectListItem{Text = "刪除", Value = "true"}
                                         }, "會員狀態")
                             @Html.ValidationMessageFor(model => model.Delete, "", new { @class = "text-danger" })
                         </div>
@@ -78,7 +87,7 @@
                 }
                 else
                 {
-                    @Html.Hidden("Delete", "true")
+                    @Html.Hidden("Delete", "false")
                 }
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">

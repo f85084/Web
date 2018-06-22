@@ -30,6 +30,11 @@ namespace Library.DBServer
             /// 刪除使用者資料
             /// </summary>
             internal const string User_Delete = "usp_User_Delete";
+
+            /// <summary>
+            /// 取得相同使用者
+            /// </summary>
+            internal const string CheckAccount_Get = "usp_User_CheckAccount_Get";
         }
 
         public struct Message

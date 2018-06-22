@@ -25,6 +25,7 @@ namespace Library
         /// </summary>
         [Display(Name = "名稱")]
         [Required(ErrorMessage = "請輸入名稱")]
+        [StringLength(10, ErrorMessage = "名稱不能超過10個字元")]
         public string UserName { get; set; }
 
         /// <summary>

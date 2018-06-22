@@ -12,33 +12,6 @@ namespace Library
 {
     public class ReplyWeb
     {
-        public IEnumerable<Reply> GetReply()
-        {
-
-            List<Reply> replys = new List<Reply>();
-            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
-            {
-                SqlCommand cmd = new SqlCommand(SPName.Reply.Reply_Get, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                con.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
-                {
-                    Reply reply = new Reply();
-                    reply.Id = Convert.ToInt32(rdr["Id"]);
-                    reply.UserId = Convert.ToInt32(rdr["UserId"]);
-                    reply.MessageId = Convert.ToInt32(rdr["MessageId"]);
-                    reply.UserName = rdr["UserName"].ToString();
-                    reply.Context = rdr["Context"].ToString();
-                    reply.CreatDate = Convert.ToDateTime(rdr["CreatDate"]);
-                    reply.Delete = Convert.ToBoolean(rdr["Delete"]);
-                    replys.Add(reply);
-                }
-            }
-            return replys;
-        }
-
-
 
         public void AddReply(Reply reply)
         {
@@ -66,6 +39,8 @@ namespace Library
                 SqlParameter sqlParamUserName = new SqlParameter
                 {
                     ParameterName = "@UserName",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 20,
                     Value = reply.UserName
                 };
                 cmd.Parameters.Add(sqlParamUserName);
@@ -73,6 +48,8 @@ namespace Library
                 SqlParameter sqlParamContext = new SqlParameter
                 {
                     ParameterName = "@Context",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 200,
                     Value = reply.Context
                 };
                 cmd.Parameters.Add(sqlParamContext);

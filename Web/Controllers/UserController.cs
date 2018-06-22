@@ -10,6 +10,8 @@ using System.Data.SqlClient;
 using System.Web.Security;
 using System;
 
+
+
 namespace Web.Controllers
 {
     public class UserController : Controller
@@ -25,8 +27,8 @@ namespace Web.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            List<Library.User> users =  userWeb.GetUsers()
-                    .Where(x => !x.Delete )
+            List<Library.User> users = userWeb.GetUsers()
+                    .Where(x => !x.Delete)
                     .ToList();
             return View(users);
         }
@@ -45,7 +47,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Library.User user, string UserAccount, int UserClass )
+        public ActionResult Create(Library.User user, string UserAccount, int UserClass)
         {
             UserWeb userWeb = new UserWeb();
 
@@ -55,15 +57,24 @@ namespace Web.Controllers
                 return View("Create");
             }
 
-            userWeb.AddUser(user);
-            if (UserClass == 0)
+            bool isSuccess = userWeb.AddUser(user);
+            if (isSuccess)
             {
-                return RedirectToAction("Index");
+                ViewBag.Msg = "帳號已註冊過";
+                return View();
             }
-            else
-            {
-                return RedirectToAction("Index" , "Message");
+                else {
+                        
+                if (UserClass == 0)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Message");
+                }
             }
+           
         }
         #endregion
 
@@ -188,6 +199,7 @@ namespace Web.Controllers
         //    }
         //}
         #endregion
+
 
     }
 }

@@ -11,14 +11,6 @@ namespace Web.Controllers
 {
     public class ReplyController : Controller
     {
-        #region 頁面取得
-        public ActionResult Index()
-        {
-            ReplyWeb replyWeb = new ReplyWeb();
-            return View(replyWeb.GetReply());
-
-        }
-        #endregion
 
         #region 建立回覆
         /// <summary>

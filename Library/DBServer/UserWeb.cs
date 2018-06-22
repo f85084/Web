@@ -52,7 +52,7 @@ namespace Library
         #endregion
 
         #region 新增帳號
-        public void AddUser(User user)
+        public bool AddUser(User user)
         {
 
             using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
@@ -62,9 +62,15 @@ namespace Library
                     CommandType = CommandType.StoredProcedure
                 };
 
+                SqlParameter returnValue = new SqlParameter("@Id", SqlDbType.Int);
+                returnValue.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(returnValue);
+
                 SqlParameter sqlParamUserAccount = new SqlParameter
                 {
                     ParameterName = "@UserAccount",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 50,
                     Value = user.UserAccount
                 };
                 cmd.Parameters.Add(sqlParamUserAccount);
@@ -79,6 +85,8 @@ namespace Library
                 SqlParameter sqlParamEmail = new SqlParameter
                 {
                     ParameterName = "@Email",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 50,
                     Value = user.Email
                 };
                 cmd.Parameters.Add(sqlParamEmail);
@@ -86,6 +94,8 @@ namespace Library
                 SqlParameter sqlParamPassword = new SqlParameter
                 {
                     ParameterName = "@Password",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 20,
                     Value = user.Password
                 };
                 cmd.Parameters.Add(sqlParamPassword);
@@ -93,6 +103,8 @@ namespace Library
                 SqlParameter sqlParamUserName = new SqlParameter
                 {
                     ParameterName = "@UserName",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 20,
                     Value = user.UserName
                 };
                 cmd.Parameters.Add(sqlParamUserName);
@@ -120,6 +132,19 @@ namespace Library
 
                 con.Open();
                 cmd.ExecuteNonQuery();
+
+                string Value = returnValue.Value.ToString();
+
+                if (Value == "")
+                {
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
         }
         #endregion
@@ -176,13 +201,6 @@ namespace Library
                     Value = user.UserName
                 };
                 cmd.Parameters.Add(sqlParamUserName);
-
-                SqlParameter sqlParamCreatDate = new SqlParameter
-                {
-                    ParameterName = "@CreatDate",
-                    Value = DateTime.Now
-                };
-                cmd.Parameters.Add(sqlParamCreatDate);
 
                 SqlParameter sqlParamMofiyDate = new SqlParameter
                 {

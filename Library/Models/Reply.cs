@@ -24,6 +24,13 @@ namespace Library
         /// 留言編號  --對應 Message 的 ID
         /// </summary>
         public int MessageId { get; set; }
+
+        /// <summary>
+        /// 留言名稱
+        /// </summary>
+        [Display(Name = "名稱")]
+        [Required(ErrorMessage = "請輸入名稱")]
+        [StringLength(10, ErrorMessage = "名稱不能超過10個字元")]
         public string UserName { get; set; }
 
         /// <summary>

@@ -16,9 +16,13 @@ CREATE PROCEDURE usp_User_Add
     )
 AS
     BEGIN  
-        INSERT  INTO "User" 
+		if not exists(select Id from [User] where UserAccount=@UserAccount)
+		begin
+        INSERT  INTO [User] 
+        VALUES  ( @UserAccount, @UserClass, @Email, @Password, @UserName, getdate(), getdate() , @Delete) 
 
-        VALUES  ( @UserAccount, @UserClass, @Email, @Password, @UserName, getdate(), null , @Delete) 
+		SET @Id = @@IDENTITY  
+		end;
     END;
 GO 
 
