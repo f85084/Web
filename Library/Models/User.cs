@@ -81,4 +81,25 @@ namespace Library
         [Display(Name = "狀態")]
         public bool Delete { get; set; }
     }
+
+    public class CheckLogin
+    {
+
+        /// <summary>
+        /// 會員帳號
+        /// </summary>
+        [Display(Name = "帳號")]
+        [Required(ErrorMessage = "請輸入帳號")]
+        [RegularExpression(WebShareConst.UserAccountExpression, ErrorMessage = WebShareConst.AccountNotValid)]
+        public string UserAccount { get; set; }
+
+        /// <summary>
+        /// 會員密碼
+        /// </summary>
+        [Display(Name = "密碼")]
+        [StringLength(10, ErrorMessage = "密碼最長為10")]
+        [Required(ErrorMessage = "請輸入密碼")]
+        public string Password { get; set; }
+
+    }
 }

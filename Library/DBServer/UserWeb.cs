@@ -12,15 +12,6 @@ namespace Library
 {
     public class UserWeb
     {
-        public IEnumerable<User> user
-        {
-            get;
-            set;
-        }
-        public string UserAccount { get; set; }
-
-
-
         #region 讀取
         public IEnumerable<User> GetUsers()
         {
@@ -244,5 +235,57 @@ namespace Library
         }
         #endregion
 
+        #region 會員登入驗證
+        /// <summary>
+        /// 檢查有無帳號
+        /// </summary>
+        /// <param name="UserAccount"><帳號/param>
+        /// <returns></returns>
+        public bool CheckAccount(string UserAccount)
+        {
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
+            {
+                SqlCommand cmd = new SqlCommand(SPName.User.CheckAccount_Get, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                cmd.Parameters.AddWithValue("@UserAccount", UserAccount);
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr.HasRows)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+
+        public bool CheckPassword(string UserAccount, string Password)
+        {
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
+            {
+                SqlCommand cmd = new SqlCommand(SPName.User.CheckLoginAccount_Get, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                cmd.Parameters.AddWithValue("@UserAccount", UserAccount);
+                cmd.Parameters.AddWithValue("@Password", Password);
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr.HasRows)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+
+        #endregion
     }
 }

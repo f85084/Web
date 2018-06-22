@@ -200,6 +200,45 @@ namespace Web.Controllers
         //}
         #endregion
 
+        #region 會員登入
+
+        /// <summary>
+        /// 會員登入
+        /// </summary>
+        /// <returns></returns>
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(Library.CheckLogin user, string UserAccount, string Password)
+        {
+            //驗證帳號
+            if (userWeb.CheckAccount(UserAccount))
+            {
+                //驗證密碼
+                if (userWeb.CheckPassword(UserAccount, Password))
+                {
+                    return RedirectToAction("Index", "Message");
+                }
+                else
+                {
+                    ViewBag.Msg = "密碼輸入錯誤...";
+                    return View();
+                }
+            }
+            else
+            {
+                ViewBag.Msg = "找不到帳號...";
+                return View();
+            }
+
+
+        }
+        #endregion
 
     }
 }
