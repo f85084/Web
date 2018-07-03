@@ -22,11 +22,22 @@ namespace Web.Controllers
         public ActionResult Create(int? messageId)
         {
             ViewBag.MessageId = messageId;
-            return View();
+            Reply model = new Reply();
+            string UserName = "";
+            int Id = 0;
+            if (Session["UserAccount"] != null)
+            {
+                int.TryParse(Session["Id"].ToString(), out Id);
+                model.UserId = Id;
+                UserName = Session["UserName"].ToString();
+                model.UserName = UserName;
+            }
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Create(Library.Reply reply ,int? messageId)
+        public ActionResult Create(Library.Reply reply, int? messageId)
         {
 
             if (!ModelState.IsValid)
@@ -34,16 +45,15 @@ namespace Web.Controllers
                 return View("Create");
             }
 
-            if (messageId == 0 || (messageId == null))
+            if (messageId == 0)
             {
                 return View("Index", "Message");
             }
 
             ReplyWeb replyWeb = new ReplyWeb();
             replyWeb.AddReply(reply);
-            return RedirectToAction("Index" , "Message");
+            return RedirectToAction("Index", "Message");
         }
         #endregion
-
     }
 }

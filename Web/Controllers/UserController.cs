@@ -9,8 +9,8 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Web.Security;
 using System;
-
-
+using System.Web;
+using Library.WebShare;
 
 namespace Web.Controllers
 {
@@ -25,12 +25,25 @@ namespace Web.Controllers
         /// 會員首頁取得
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public ActionResult Index()
         {
             List<Library.User> users = userWeb.GetUsers()
                     .Where(x => !x.Delete)
                     .ToList();
-            return View(users);
+            byte UserClass = 0;
+            if (SessionManagement.LoginUser != null)
+            {
+                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+            }
+            if (UserClass == 2)
+            {
+                return View(users);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Message");
+            }
         }
         #endregion
 
@@ -40,6 +53,7 @@ namespace Web.Controllers
         /// 建立會員
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Create()
         {
@@ -47,7 +61,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Library.User user, string UserAccount, int UserClass)
+        public ActionResult Create(Library.User user, string UserAccount)
         {
             UserWeb userWeb = new UserWeb();
 
@@ -63,18 +77,24 @@ namespace Web.Controllers
                 ViewBag.Msg = "帳號已註冊過";
                 return View();
             }
-                else {
-                        
-                if (UserClass == 0)
+            else
+            {
+                byte UserClass = 0;
+
+                if (SessionManagement.LoginUser != null)
                 {
-                    return RedirectToAction("Index");
+                    byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+                }
+                if (UserClass == 2)
+                {
+                    return RedirectToAction("Index", "User");
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Message");
+                    return RedirectToAction("Login", "User");
                 }
             }
-           
+
         }
         #endregion
 
@@ -97,7 +117,29 @@ namespace Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(user);
+
+            if (user.UserClass == 1)
+            {
+                ViewBag.UserClass = "管理員";
+            }
+            else
+            {
+                ViewBag.UserClass = "一般";
+            }
+
+            byte UserClass = 0;
+            if (Session["Id"] != null)
+            {
+                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+            }
+            if (UserClass == 2)
+            {
+                return View(user);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Message");
+            }
         }
         #endregion
 
@@ -125,7 +167,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit([Bind(Include = "Id,UserAccount, UserClass, Email, Password, UserName")]Library.User user)
+        public ActionResult Edit([Bind(Include = "Id,UserAccount, UserClass, Email, Password, RePassword, UserName")]Library.User user)
         {
             user.Id = userWeb.GetUsers().Single(g => g.Id == user.Id).Id;
 
@@ -135,7 +177,24 @@ namespace Web.Controllers
             }
 
             userWeb.SaveUser(user);
-            return RedirectToAction("Index");
+
+            byte UserClass = 0;
+            if (Session["Id"] != null)
+            {
+                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+            }
+            if (UserClass == 2)
+            {
+                return RedirectToAction("Index", "User");
+            }
+            else
+            {
+                if (Session["Id"] != null)
+                {
+                    Session["UserName"] = user.UserName;
+                }
+                return RedirectToAction("Index", "Message");
+            }
         }
         #endregion
 
@@ -150,54 +209,8 @@ namespace Web.Controllers
         public ActionResult Delete(int id)
         {
             userWeb.DeleteUser(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "User");
         }
-        #endregion
-
-        #region 會員登入
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Logon(LogonViewModel logonModel)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View();
-        //    }
-        //    /*
-        //    var systemuser = db.SystemUsers
-        //        .Include(x => x.SystemRoles)
-        //        .FirstOrDefault(x => x.Account == logonModel.Account);
-        //        */
-
-        //    UserWeb userWeb = new UserWeb();
-        //    //List<Library.User> users = userWeb.Users.ToList();
-        //    //users = userWeb.Users
-        //    //        .Where(x => x.UserAccount == logonModel.UserAccount)
-        //    //        .ToList();
-
-        //    var userAccount = userWeb.Users
-        //       .Where(x => x.UserAccount == logonModel.UserAccount);
-
-
-        //    if (userAccount == null)
-        //    {
-        //        ModelState.AddModelError("", "請輸入正確的帳號或密碼!");
-        //        return View();
-        //    }
-
-        //    var password = CryptographyPassword(logonModel.Password, BaseController.PasswordSalt);
-
-        //    if (userAccount.Password.Equals(password))
-        //    {
-        //        //this.LoginProcess(userAccount);
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    else
-        //    {
-        //        ModelState.AddModelError("", "請輸入正確的帳號或密碼!");
-        //        return View();
-        //    }
-        //}
         #endregion
 
         #region 會員登入
@@ -206,39 +219,59 @@ namespace Web.Controllers
         /// 會員登入
         /// </summary>
         /// <returns></returns>
-
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Login()
         {
+            int Id = 0;
+
+            if (Session["Id"] != null)
+            {
+                int.TryParse(Session["Id"].ToString(), out Id);
+            }
+            if (Id != 0)
+            {
+                return RedirectToAction("Index", "Message");
+            }
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(Library.CheckLogin user, string UserAccount, string Password)
+        public ActionResult Login(Library.User user, string UserAccount, string Password)
         {
-            //驗證帳號
-            if (userWeb.CheckAccount(UserAccount))
+            //驗證帳號和密碼
+            User loginUser = userWeb.CheckPassword(UserAccount, Password);
+            if (loginUser != null)
             {
-                //驗證密碼
-                if (userWeb.CheckPassword(UserAccount, Password))
-                {
-                    return RedirectToAction("Index", "Message");
-                }
-                else
-                {
-                    ViewBag.Msg = "密碼輸入錯誤...";
-                    return View();
-                }
+                SessionManagement.LoginUser = loginUser;
+                Session["UserAccount"] = loginUser.UserAccount;
+                Session["Id"] = loginUser.Id;
+                Session["UserClass"] = loginUser.UserClass;
+                Session["UserName"] = loginUser.UserName;
+
+                return RedirectToAction("Index", "Message");
             }
             else
             {
-                ViewBag.Msg = "找不到帳號...";
+                ViewBag.Msg = "帳號或密碼輸入錯誤...";
                 return View();
             }
-
-
         }
         #endregion
 
+
+        #region 會員登出
+
+        /// <summary>
+        /// 會員登出
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            return RedirectToAction("Index", "Message");
+        }
+        #endregion
     }
 }

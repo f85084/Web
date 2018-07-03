@@ -229,6 +229,12 @@ namespace Library
                 };
                 cmd.Parameters.Add(sqlParamId);
 
+                SqlParameter sqlParamDelete = new SqlParameter
+                {
+                    ParameterName = "@Delete",
+                    Value = 1
+                };
+                cmd.Parameters.Add(sqlParamDelete);
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
@@ -237,34 +243,14 @@ namespace Library
 
         #region 會員登入驗證
         /// <summary>
-        /// 檢查有無帳號
+        /// 檢查帳號密碼是否正確
         /// </summary>
-        /// <param name="UserAccount"><帳號/param>
+        /// <param name="UserAccount">帳號</param>
+        /// <param name="Password">密碼</param>
         /// <returns></returns>
-        public bool CheckAccount(string UserAccount)
+        public User CheckPassword(string UserAccount, string Password)
         {
-            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
-            {
-                SqlCommand cmd = new SqlCommand(SPName.User.CheckAccount_Get, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                con.Open();
-                cmd.Parameters.AddWithValue("@UserAccount", UserAccount);
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    while (dr.Read())
-                    {
-                        if (dr.HasRows)
-                        {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            }
-        }
-
-        public bool CheckPassword(string UserAccount, string Password)
-        {
+            User result = null;
             using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
             {
                 SqlCommand cmd = new SqlCommand(SPName.User.CheckLoginAccount_Get, con);
@@ -274,18 +260,22 @@ namespace Library
                 cmd.Parameters.AddWithValue("@Password", Password);
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    while (dr.Read())
+                    if (dr.Read())
                     {
-                        if (dr.HasRows)
+                        result = new User()
                         {
-                            return true;
-                        }
+                            Id = Convert.ToInt32(dr["Id"]),
+                            UserAccount = dr["UserAccount"].ToString(),
+                            UserClass = Convert.ToByte(dr["UserClass"]),
+                            UserName = dr["UserName"].ToString()
+                        };
                     }
-                    return false;
                 }
             }
-        }
 
+            return result;
+        }
         #endregion
+
     }
 }

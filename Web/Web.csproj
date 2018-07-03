@@ -118,13 +118,11 @@
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\Reply\Create.cshtml" />
-    <Content Include="Views\Reply\Index.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Message\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -146,6 +144,8 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Message\ManageIndex.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Logout.cshtml" />
+    <Content Include="Views\Message\ReplyIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

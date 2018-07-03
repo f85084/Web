@@ -1,20 +1,19 @@
 -- =============================================
 -- Author:		Anna Chen
 -- Create date: 2018/06/01
--- Description:	刪除會員
+-- Description:	刪除回覆
 -- =============================================
-CREATE PROCEDURE usp_User_Delete
+CREATE PROCEDURE usp_Reply_Delete
     (
 	  @Id int,
 	  @Delete bit
     )
 AS
     BEGIN      
-                UPDATE  [User]
+                UPDATE  Reply
         SET     
 				[Delete] = @Delete
 
         WHERE   Id = @Id; 
     END; 
 GO
-

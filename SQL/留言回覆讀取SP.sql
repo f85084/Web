@@ -8,13 +8,25 @@ AS
     BEGIN
 		SET NOCOUNT ON;
 
-        SELECT  [Message].Id Message_Id,[Message].UserId Message_UserId,[Message].UserName Message_UserName,[Message].Context Message_Context,[Message].CreatDate Message_CreatDate,[Message].[Delete] Message_Delete,
-		        Reply.Id Reply_Id,Reply.UserId Reply_UserId,Reply.MessageId Reply_MessageId,Reply.UserName Reply_UserName,Reply.Context Reply_Context,Reply.CreatDate Reply_CreatDate,Reply.[Delete] Reply_Delete
-        FROM    [Message]
-		left outer join Reply 
-		on Message.Id = Reply.MessageId
-		where [Message].[Delete]  = 0
-		order by Message.Id;
+SELECT*From (SELECT  Id Message_Id,
+		UserId Message_UserId,
+		UserName Message_UserName,
+		Context Message_Context,
+		CreatDate Message_CreatDate,
+		[Delete] Message_Delete
+		FROM    [Message]
+		where [Delete]  = 0) AS [Message]
+left outer join (SELECT 	Id Reply_Id,
+		UserId Reply_UserId,
+		MessageId Reply_MessageId,
+		UserName Reply_UserName,
+		Context Reply_Context,
+		CreatDate Reply_CreatDate
+		,[Delete] Reply_Delete
+		FROM    Reply
+		where  [Delete] = 0)  AS Reply 
+		on [Message].Message_Id = Reply.Reply_MessageId
+		order by Message.Message_Id;
     END;
 GO 
 

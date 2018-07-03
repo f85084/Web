@@ -1,13 +1,13 @@
 ﻿@model Library.User
 @{
-    int? UserClass = null;
+    ViewBag.Title = "基本資料編輯";
 }
 <div class="row">
     <h2>基本資料編輯</h2>
     @using (Html.BeginForm("Edit", "User"))
     {
         <div class="form-horizontal">
-            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             @Html.HiddenFor(model => model.Id)
 
@@ -19,55 +19,65 @@
                     @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @if (UserClass == 0 || UserClass == null)
+            @if (byte.Parse(Session["UserClass"].ToString()) == 2)
             {
                 <div class="form-group">
                     @Html.LabelFor(model => model.UserClass, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownList("UserClass", new List<SelectListItem>
-                            {
-                                new SelectListItem{Text = "管理員", Value = "0"},
-                                new SelectListItem{Text = "一般使用者", Value = "1"}
-                            }, "請選擇會員身分")
+                                    {
+                                        new SelectListItem{Text = "管理員", Value = "2"},
+                                        new SelectListItem{Text = "一般使用者", Value = "1"}
+                                    }, "請選擇會員身分")
                         @Html.ValidationMessageFor(model => model.UserClass, "", new { @class = "text-danger" })
                     </div>
                 </div>
             }
+             @Html.HiddenFor(model => model.UserClass)
             <div class="form-group">
                 @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Email)
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+                @Html.Label("Password", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.Password("Password", "")
                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.Label("RePassword", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Password("RePassword", "")
+                    @Html.ValidationMessageFor(model => model.RePassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.UserName)
                     @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            @if (UserClass == 0 || UserClass == null)
+            @if (byte.Parse(Session["UserClass"].ToString()) == 2)
             {
-            <div class="form-group">
-                @Html.LabelFor(model => model.Delete, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("Delete", new List<SelectListItem>
-                        {
-                            new SelectListItem{Text = "顯示", Value = "true"},
-                            new SelectListItem{Text = "刪除", Value = "false"}
-                        }, "會員狀態")
-                    @Html.ValidationMessageFor(model => model.Delete, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Delete, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Delete", new List<SelectListItem>
+                                {
+                                    new SelectListItem{Text = "顯示", Value = "false"},
+                                    new SelectListItem{Text = "刪除", Value = "true"}
+                                }, "會員狀態")
+                        @Html.ValidationMessageFor(model => model.Delete, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
             }
             else
             {
@@ -81,12 +91,18 @@
         </div>
     }
 
- 
 
-    @if (UserClass == 0)
+
+    @if (byte.Parse(Session["UserClass"].ToString()) == 2)
     {
         <div>
             @Html.ActionLink("回到前一頁", "Index")
+        </div>
+    }
+    else
+    {
+        <div>
+            @Html.ActionLink("回到前一頁", "Index", "Message")
         </div>
     }
 </div>

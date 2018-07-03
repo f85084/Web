@@ -73,28 +73,33 @@ namespace Library
             }
         }
 
-        //public void DeleteMessage(int id)
-        //{
-        //    string connectionString =
-        //            ConfigurationManager.ConnectionStrings["webContext"].ConnectionString;
+        #region 刪除
+        public void DeleteMessage(int id)
+        {
+            using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
+            {
+                SqlCommand cmd = new SqlCommand(SPName.Reply.Reply_Delete, con);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-        //    using (SqlConnection con = new SqlConnection(connectionString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand("spDeleteMessage", con);
-        //        cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter sqlParamId = new SqlParameter
+                {
+                    ParameterName = "@Id",
+                    Value = id
+                };
+                cmd.Parameters.Add(sqlParamId);
 
-        //        SqlParameter sqlParamId = new SqlParameter
-        //        {
-        //            ParameterName = "@Id",
-        //            Value = id
-        //        };
-        //        cmd.Parameters.Add(sqlParamId);
+                SqlParameter sqlParamDelete = new SqlParameter
+                {
+                    ParameterName = "@Delete",
+                    Value = 1
+                };
+                cmd.Parameters.Add(sqlParamDelete);
 
-        //        con.Open();
-        //        cmd.ExecuteNonQuery();
-        //    }
-        //}
-
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        #endregion
 
     }
 }

@@ -11,7 +11,6 @@ CREATE PROCEDURE usp_User_Update
       @Email NVARCHAR(50) , 
       @Password NVARCHAR(30) , 
       @UserName NVARCHAR(20) , 
-	  @CreatDate DateTime ,
       @MofiyDate DateTime ,
 	  @Delete bit
     )
@@ -23,7 +22,6 @@ AS
 				Email = @Email ,
 				Password = @Password ,
 				UserName = @UserName ,
-				@CreatDate = getdate(),
 				MofiyDate = getdate(),
 				[Delete] =@Delete
 

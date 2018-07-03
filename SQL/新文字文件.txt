@@ -1,0 +1,18 @@
+SELECT*From (SELECT  [Message].Id Message_Id,
+		[Message].UserId Message_UserId,
+		[Message].UserName Message_UserName,
+		[Message].Context Message_Context,
+		[Message].CreatDate Message_CreatDate,
+		[Message].[Delete] Message_Delete
+		FROM    [Message]
+		where [Message].Id  = 1) AS A
+INNER JOIN (SELECT 	Reply.Id Reply_Id,
+		Reply.UserId Reply_UserId,
+		Reply.MessageId Reply_MessageId,
+		Reply.UserName Reply_UserName,
+		Reply.Context Reply_Context,
+		Reply.CreatDate Reply_CreatDate
+		,Reply.[Delete] Reply_Delete
+		FROM    Reply
+		where MessageId  = 1 and [Delete] !=1) AS B 
+		on A.Id = B.MessageId

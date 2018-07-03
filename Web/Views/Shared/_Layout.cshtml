@@ -1,6 +1,14 @@
 ﻿@{
-    int? Id = 0 ;
-    int? UserClass = 1;
+    string UserAccount = "";
+    int Id = 0;
+    byte UserClass = 0;
+
+    if (Session["UserAccount"] != null)
+    {
+        UserAccount = Session["UserAccount"].ToString();
+        int.TryParse(Session["Id"].ToString(), out Id);
+        byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+    }
 }
 <!DOCTYPE html>
 <html>
@@ -28,20 +36,24 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if ((UserClass == 0))
+                    @if (Id == 0)
+                    {
+                        <li>@Html.ActionLink("登入", "Login", "User")</li>
+                    }
+                    else if(UserClass != 2)
+                    {
+                        <li>@Html.ActionLink("基本資料", "Edit", "User", new { Id = Id }, "")</li>
+                    }
+                    else if(UserClass == 2)
                     {
                         <li>@Html.ActionLink("會員資料", "Index", "User")</li>
                         <li>@Html.ActionLink("會員留言", "ManageIndex", "Message")</li>
                     }
+                     @if (Id != 0)
+                    {
+                        <li>@Html.ActionLink("登出", "Logout", "User")</li>
+                    }
 
-                    @if (((Id != 0) && (UserClass != 0) && (UserClass != null)))
-                    {
-                        <li>@Html.ActionLink("基本資料", "Edit", "User", new { Id = Id }, "")</li>
-                    }
-                    @if ((Id == 0) || (Id == null))
-                    {
-                        <li>@Html.ActionLink("登入", "Login", "User")</li>
-                    }
                 </ul>
             </div>
         </div>

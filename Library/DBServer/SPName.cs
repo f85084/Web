@@ -76,6 +76,11 @@ namespace Library.DBServer
             /// 新增回覆資料
             /// </summary>
             internal const string Reply_Add = "usp_Reply_Add";
+
+            /// <summary>
+            /// 刪除回覆資料
+            /// </summary>
+            internal const string Reply_Delete = "usp_Reply_Delete";
         }
 
         public struct MessageReply
@@ -84,6 +89,12 @@ namespace Library.DBServer
             /// 取得留言回覆資料
             /// </summary>
             internal const string MessageRely_Get = "usp_MessageRely_Get";
+
+            /// <summary>
+            /// 取得留言回覆資料
+            /// </summary>
+            internal const string Rely2_Get = "usp_Rely2_Get";
+            
 
         }
 

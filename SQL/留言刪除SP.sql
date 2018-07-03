@@ -1,12 +1,19 @@
 -- =============================================
 -- Author:		Anna Chen
 -- Create date: 2018/06/01
--- Description:	刪除留言資料
+-- Description:	刪除留言
 -- =============================================
-CREATE PROCEDURE usp_Message_Delete ( @Id int )
+CREATE PROCEDURE usp_Message_Delete
+    (
+	  @Id int,
+	  @Delete bit
+    )
 AS
-    BEGIN
-        DELETE  FROM Message
-        WHERE   Id = @Id;
-    END;
-GO 
+    BEGIN      
+                UPDATE  [Message]
+        SET     
+				[Delete] = @Delete
+
+        WHERE   Id = @Id; 
+    END; 
+GO

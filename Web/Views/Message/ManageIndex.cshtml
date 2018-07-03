@@ -1,6 +1,5 @@
 ﻿@using Library;
-@*@using Library.Reply;*@
-@model IEnumerable<Library.Message>
+@model List<MessageReply>
 
 <h2>會員留言列表</h2>
 <div class="row">
@@ -8,10 +7,10 @@
         <table class="table">
             <tr>
                 <th>
-                    @Html.Label("model.Id", "會員編號")
+                    @Html.Label("model.Id", "留言編號")
                 </th>
                 <th>
-                    @Html.Label("model.UserId", "會員帳號")
+                    @Html.Label("model.UserId", "會員編號")
                 </th>
                 <th>
                     @Html.Label("model.UserName", "會員暱稱")
@@ -25,29 +24,29 @@
                 <th></th>
             </tr>
 
-            @foreach (Message item in Model)
+            @foreach (MessageReply item in Model)
             {
-                using (Html.BeginForm("Delete", "Message", new { id = item.Id }))
+                using (Html.BeginForm("Delete", "Message", new { id = item.Messages.Id }))
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Id)
+                            @Html.DisplayFor(modelItem => item.Messages.Id)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UserId)
+                            @Html.DisplayFor(modelItem => item.Messages.UserId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
+                            @Html.DisplayFor(modelItem => item.Messages.UserName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Context)
+                            @Html.DisplayFor(modelItem => item.Messages.Context)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CreatDate)
+                            @Html.DisplayFor(modelItem => item.Messages.CreatDate)
                         </td>
                         <td>
-                            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("Create", "Reply", new{ id = item.Id })'" />
-                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? Id = @item.Id , Name = @item.UserId');" />
+                            <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("ReplyIndex", "Message", new{ messagesId = item.Messages.Id })'" />
+                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? 留言編號 = @item.Messages.Id , 留言內容 = @item.Messages.Context');" />
                         </td>
                     </tr>
                 }

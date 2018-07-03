@@ -49,7 +49,7 @@
                         <td>
                             <input type="button" class="btn btn-primary btn-sm" value="編輯" onclick="location.href='@Url.Action("Edit", "User", new{ id = item.Id })'" />
                             <input type="button" class="btn btn-primary btn-sm" value="明細" onclick="location.href='@Url.Action("Details", "User", new{ id = item.Id })'" />
-                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? Id = @item.Id , Name = @item.UserAccount');" />
+                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? 會員編號 = @item.Id , 名稱 = @item.UserAccount');" />
                         </td>
                     </tr>
                 }
