@@ -1,7 +1,6 @@
 ﻿@model Library.User
 @{
     ViewBag.Title = "帳戶資訊";
-
 }
 
 <div class="row">
@@ -35,7 +34,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="刪除" class="btn btn-default" />
+                    <input type="submit" class="btn btn-danger btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎?');" />
                 </div>
             </div>
         </div>

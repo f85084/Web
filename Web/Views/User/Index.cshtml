@@ -1,5 +1,8 @@
 ﻿@using Library;
-@model IEnumerable<Library.User>
+@using PagedList
+@using PagedList.Mvc
+@*@model IEnumerable<Library.User>*@
+@model IPagedList<User>
 
 @{
     ViewBag.Title = "會員列表";
@@ -8,6 +11,14 @@
 <h2>會員列表</h2>
 <div class="row">
     <div class="table-responsive">
+        <p>
+            @using (Html.BeginForm("Index", "User", FormMethod.Get))
+            {
+                <b>搜尋:</b><br />
+                @Html.TextBox("searchText") <br />
+                <input type="submit" value="Go" />
+            }
+        </p>
         <div class="col-sm-9">
             <button type="button" class="btn btn-primary btn-sm" style="margin-top: 10px;margin-bottom: 10px;" value="建立新的會員" onclick="location.href='@Url.Action("Create", "User")'">建立新的會員</button>
         </div>
@@ -49,11 +60,21 @@
                         <td>
                             <input type="button" class="btn btn-primary btn-sm" value="編輯" onclick="location.href='@Url.Action("Edit", "User", new{ id = item.Id })'" />
                             <input type="button" class="btn btn-primary btn-sm" value="明細" onclick="location.href='@Url.Action("Details", "User", new{ id = item.Id })'" />
-                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? 會員編號 = @item.Id , 名稱 = @item.UserAccount');" />
+                            <input type="submit" class="btn btn-danger btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? 會員編號 = @item.Id , 名稱 = @item.UserAccount');" />
                         </td>
                     </tr>
                 }
             }
         </table>
+        @Html.PagedListPager(Model, pageNumber => Url.Action("Index",
+            new
+            {
+                pageNumber,
+                searchText = Request.QueryString["searchText"],
+            }),
+            new PagedListRenderOptions
+            {
+                Display = PagedListDisplayMode.IfNeeded,
+            })
     </div>
 </div>

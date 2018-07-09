@@ -146,6 +146,8 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Logout.cshtml" />
     <Content Include="Views\Message\ReplyIndex.cshtml" />
+    <Content Include="Views\User\GetSession.cshtml" />
+    <Content Include="Views\Message\CreateReply.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

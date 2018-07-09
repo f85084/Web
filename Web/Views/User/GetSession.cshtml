@@ -1,0 +1,10 @@
+﻿@using Library;
+@using Library.WebShare;
+@*@model Library.User*@
+@model IEnumerable<User>
+@{
+}
+@if (SessionManagement.LoginUser != null)
+{
+    <p style=" color: #ffffff;padding: 10px 15px;padding-top: 15px;margin-bottom: 0px;">@ViewBag.UserName ,你好</p>
+}

@@ -1,13 +1,14 @@
-﻿@{
+﻿@using Library.WebShare;
+@{
     string UserAccount = "";
     int Id = 0;
     byte UserClass = 0;
 
-    if (Session["UserAccount"] != null)
+    if (SessionManagement.LoginUser != null)
     {
-        UserAccount = Session["UserAccount"].ToString();
-        int.TryParse(Session["Id"].ToString(), out Id);
-        byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+        UserAccount = SessionManagement.LoginUser.UserAccount;
+        Id = SessionManagement.LoginUser.Id;
+        UserClass = SessionManagement.LoginUser.UserClass;
     }
 }
 <!DOCTYPE html>
@@ -35,26 +36,30 @@
                 @Html.ActionLink("Web", "", "", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navbar-right">
+                     @if (Id != 0)
+                     {
+                        <li>@{Html.RenderAction("GetSession", "User");}</li>
+                        <li>@Html.ActionLink("登出", "Logout", "User")</li>
+                    }
+
                     @if (Id == 0)
                     {
                         <li>@Html.ActionLink("登入", "Login", "User")</li>
                     }
-                    else if(UserClass != 2)
+                    </ul>
+                    <ul class="nav navbar-nav">
+                    @if(UserClass != 2 && UserClass != 0)
                     {
                         <li>@Html.ActionLink("基本資料", "Edit", "User", new { Id = Id }, "")</li>
                     }
-                    else if(UserClass == 2)
+                    @if(UserClass == 2)
                     {
                         <li>@Html.ActionLink("會員資料", "Index", "User")</li>
                         <li>@Html.ActionLink("會員留言", "ManageIndex", "Message")</li>
                     }
-                     @if (Id != 0)
-                    {
-                        <li>@Html.ActionLink("登出", "Logout", "User")</li>
-                    }
+                     </ul>
 
-                </ul>
             </div>
         </div>
     </div>

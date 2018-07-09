@@ -1,61 +1,63 @@
-﻿@model Library.Reply
+﻿@using Library.WebShare;
+@model Library.Reply
 @{
     ViewBag.Title = "新增回覆";
-    int Id = 0;
-    byte UserClass = 0;
-
-    if (Session["Id"] != null)
-    {
-        int.TryParse(Session["Id"].ToString(), out Id);
-        byte.TryParse(Session["UserClass"].ToString(), out UserClass);
-    }
+    Layout = "";
 }
 
-<div class="row">
-    <h2>回覆留言</h2>
-
+<div class="row" style="padding: 2.25rem;">
+    <h4>回覆留言</h4>
     @using (Html.BeginForm("Create", "Reply"))
-      {
-    <div class="form-horizontal">
-        @Html.Hidden("MessageId", new { ViewBag.MessageId })
-           @if (Id != 0){
-           @Html.HiddenFor(model => model.UserId)
+    {
+        <div class="form-horizontal">
+            @Html.Hidden("MessageId", new { ViewBag.MessageId })
+            @if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.Id != 0)
+            {
+                @Html.HiddenFor(model => model.UserId)
             }
 
-        <div class="form-group">
-            @Html.Label("UserName", "名稱", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName)
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("UserName", "名稱", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.Id != 0)
+                    {
+                        @Html.DisplayFor(model => model.UserName)
+                        @Html.HiddenFor(model => model.UserName)
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.UserName)
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    }
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Context", "內容", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextArea("Context", "", 6, 60, new { style = "border: solid 1px #ccc; border-radius: 0.25rem; " })
-                @Html.ValidationMessageFor(model => model.Context, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Context", "內容", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextArea("Context", "", 6, 60, new { style = "border: solid 1px #ccc; border-radius: 0.25rem; " })
+                    @Html.ValidationMessageFor(model => model.Context, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        @Html.Hidden("Delete", "false")
+            @Html.Hidden("Delete", "false")
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="回覆" class="btn btn-default  " />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="回覆" class="btn btn-default  " />
+                </div>
             </div>
         </div>
-    </div>
     }
-    @if ((UserClass == 2))
+    @*@if ((SessionManagement.LoginUser != null && SessionManagement.LoginUser.UserClass == 2))
     {
-    <div>
-        @Html.ActionLink("回到列表", "ManageIndex", "Message")
-    </div>
+        <div>
+            @Html.ActionLink("回到列表", "ManageIndex", "Message")
+        </div>
     }
     else
     {
-    <div>
-        @Html.ActionLink("回到列表", "Index", "Message")
-    </div>
-    }
+        <div>
+            @Html.ActionLink("回到列表", "Index", "Message")
+        </div>
+    }*@
 </div>

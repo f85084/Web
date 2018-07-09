@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Net;
 using PagedList;
 using Library.WebShare;
+using PagedList.Mvc;
 
 namespace Web.Controllers
 {
@@ -22,27 +23,11 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(int? pageNumber)
         {
             List<MessageReply> model = messageWeb.GetMessageReplys().ToList();
-            string UserAccount = "";
-            string UserName = "";
-            int Id = 0;
-            byte UserClass = 0;
-
-            if (SessionManagement.LoginUser != null)
-            {
-
-                UserAccount = Session["UserAccount"].ToString();
-                ViewBag.UserAccount = UserAccount;
-                UserName = Session["UserName"].ToString();
-                ViewBag.UserName = UserName;
-                int.TryParse(Session["Id"].ToString(), out Id);
-                ViewBag.Id = Id;
-                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
-                ViewBag.UserClass = UserClass;
-            }
-            return View(model);
+            IPagedList<MessageReply> messageReplyPagedList = model.ToPagedList(pageNumber ?? 1, 5);
+            return View(messageReplyPagedList);
         }
 
         #endregion
@@ -53,17 +38,25 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult ManageIndex()
+        public ActionResult ManageIndex(string searchText,int? pageNumber)
         {
             //List<MessageReply> data = new List<MessageReply>();
-            byte UserClass = 0;
-            if (SessionManagement.LoginUser != null)
+            List<MessageReply> model = messageWeb.GetMessageReplys().ToList();
+            if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.UserClass == 2)
             {
-                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
-            }
-            if (UserClass == 2)
-            {
-                return View(messageWeb.GetMessageReplys());
+                if (searchText != null)
+                {
+                    List<Library.MessageReply> model2 = messageWeb.GetMessageReplys()
+                         .Where(x => x.Messages.Context.Contains(searchText) || searchText == null).ToList();
+                    IPagedList<MessageReply> messageReplyPagedList = model2.ToPagedList(pageNumber ?? 1, 10);
+                    return View(messageReplyPagedList);
+                }
+                else
+                {
+                    //return View(messageWeb.GetMessageReplys());
+                    IPagedList<MessageReply> messageReplyPagedList = model.ToPagedList(pageNumber ?? 1, 10);
+                    return View(messageReplyPagedList);
+                }
             }
             else
             {
@@ -83,14 +76,10 @@ namespace Web.Controllers
         {
             Message model = new Message();
 
-            string UserName = "";
-            int Id = 0;
-            if (Session["UserAccount"] != null)
+            if (SessionManagement.LoginUser != null)
             {
-                int.TryParse(Session["Id"].ToString(), out Id);
-                model.UserId = Id;
-                UserName = Session["UserName"].ToString();
-                model.UserName = UserName;
+                model.UserId = SessionManagement.LoginUser.Id;
+                model.UserName = SessionManagement.LoginUser.UserName;
             }
 
             return View(model);
@@ -119,8 +108,19 @@ namespace Web.Controllers
         public ActionResult Delete(int id)
         {            
             MessageWeb messageWeb = new MessageWeb();
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
             messageWeb.DeleteMessage(id);
-            return Redirect(Request.UrlReferrer.AbsolutePath);
+            if (SessionManagement.LoginUser.UserClass == 2)
+            {
+                return Redirect(Request.UrlReferrer.AbsolutePath);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Message");
+            }
         }
         #endregion
 
@@ -130,32 +130,49 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
 
-         public ActionResult ReplyIndex(int messagesId)
+         public ActionResult ReplyIndex(int? messagesId)
         {
-            //List<MessageReply> model = messageWeb.GetMessageReplys().ToList();
             Library.MessageReply model = messageWeb.GetMessageReplys().ToList()
              .Find(x => x.Messages.Id == messagesId);
             string UserAccount = "";
             string UserName = "";
-            int Id = 0;
-            byte UserClass = 0;
+
+            if (messagesId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
 
             if (SessionManagement.LoginUser != null)
             {
-
-                UserAccount = Session["UserAccount"].ToString();
+                UserAccount = SessionManagement.LoginUser.UserAccount;
                 ViewBag.UserAccount = UserAccount;
-                UserName = Session["UserName"].ToString();
+                UserName = SessionManagement.LoginUser.UserName;
                 ViewBag.UserName = UserName;
-                int.TryParse(Session["Id"].ToString(), out Id);
-                ViewBag.Id = Id;
-                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
-                ViewBag.UserClass = UserClass;
             }
-            return View(model);
+            if (SessionManagement.LoginUser.UserClass != 2)
+            {
+                return RedirectToAction("Index");
+            }
+                return View(model);
         }
         #endregion
 
+        #region 刪除回覆
+        /// <summary>
+        /// 刪除回覆
+        /// </summary>
+        /// <param name="id">留言id</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DeleteReply(int ReplyId)
+        {
+            ReplyWeb replyWeb = new ReplyWeb();
+            replyWeb.DeleteMessage(ReplyId);
+            //return Redirect(Request.UrlReferrer.AbsolutePath);
+            return RedirectToAction("ManageIndex");
+        }
+        #endregion
 
 
     }

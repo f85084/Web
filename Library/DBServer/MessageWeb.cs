@@ -52,6 +52,7 @@ namespace Library
 
                             Reply reply = new Reply()
                             {
+                                Id = Convert.ToInt32(dr["Reply_Id"]),
                                 UserName = dr["Reply_UserName"].ToString(),
                                 Context = dr["Reply_Context"].ToString(),
                                 CreatDate = Convert.ToDateTime(dr["Reply_CreatDate"].ToString())
@@ -66,6 +67,7 @@ namespace Library
                     {
                         item.ReplyList.Add(new Reply
                         {
+                            Id = Convert.ToInt32(dr["Reply_Id"]),
                             UserName = dr["Reply_UserName"].ToString(),
                             Context = dr["Reply_Context"].ToString(),
                             CreatDate = Convert.ToDateTime(dr["Reply_CreatDate"].ToString())
@@ -77,77 +79,6 @@ namespace Library
             return result;
         }
         #endregion
-
-        #region 取得留言回覆
-        /// <summary>
-        /// 取得留言回覆
-        /// </summary>
-        /// <returns></returns>
-        //public IEnumerable<MessageReply> GetReplys(int Id)
-        //{
-        //    List<MessageReply> result = new List<MessageReply>();
-
-        //    using (SqlConnection con = new SqlConnection(DBConnection.ConnectString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand(SPName.MessageReply.Rely2_Get, con);
-        //        cmd.CommandType = CommandType.StoredProcedure;
-        //        SqlParameter sqlParamId = new SqlParameter
-        //        {
-        //            ParameterName = "@Id",
-        //            Value = Id
-        //        };
-        //        cmd.Parameters.Add(sqlParamId);
-
-        //        con.Open();
-        //        SqlDataReader dr = cmd.ExecuteReader();
-        //        int currentID = 0;
-        //        MessageReply item = null;
-        //        while (dr.Read())
-        //        {
-        //            if (currentID == 0 || int.Parse(dr["Message_Id"].ToString()) != currentID)
-        //            {
-        //                Message msg = new Message()
-        //                {
-        //                    Id = Convert.ToInt32(dr["Message_Id"]),
-        //                    UserId = Convert.ToInt32(dr["Message_UserId"]),
-        //                    UserName = dr["Message_UserName"].ToString(),
-        //                    Context = dr["Message_Context"].ToString(),
-        //                    CreatDate = Convert.ToDateTime(dr["Message_CreatDate"].ToString())
-        //                };
-        //                item = new MessageReply();
-        //                item.Messages = msg;
-        //                item.ReplyList = new List<Reply>();
-        //                if (dr["Reply_Id"] != DBNull.Value)
-        //                {
-
-        //                    Reply reply = new Reply()
-        //                    {
-        //                        UserName = dr["Reply_UserName"].ToString(),
-        //                        Context = dr["Reply_Context"].ToString(),
-        //                        CreatDate = Convert.ToDateTime(dr["Reply_CreatDate"].ToString())
-        //                    };
-        //                    item.ReplyList.Add(reply);
-        //                }
-
-        //                result.Add(item);
-        //                currentID = msg.Id;
-        //            }
-        //            else
-        //            {
-        //                item.ReplyList.Add(new Reply
-        //                {
-        //                    UserName = dr["Reply_UserName"].ToString(),
-        //                    Context = dr["Reply_Context"].ToString(),
-        //                    CreatDate = Convert.ToDateTime(dr["Reply_CreatDate"].ToString())
-        //                });
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-        #endregion
-
 
         #region 新增留言
         public void AddMessage(Message message)

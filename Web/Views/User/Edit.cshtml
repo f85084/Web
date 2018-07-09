@@ -1,9 +1,11 @@
 ﻿@model Library.User
+@using Library.WebShare;
 @{
     ViewBag.Title = "基本資料編輯";
 }
 <div class="row">
     <h2>基本資料編輯</h2>
+    <span style="color:red">@ViewBag.UserName</span>
     @using (Html.BeginForm("Edit", "User"))
     {
         <div class="form-horizontal">
@@ -19,21 +21,21 @@
                     @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @if (byte.Parse(Session["UserClass"].ToString()) == 2)
+            @if (SessionManagement.LoginUser.UserClass == 2)
             {
                 <div class="form-group">
                     @Html.LabelFor(model => model.UserClass, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownList("UserClass", new List<SelectListItem>
-                                    {
-                                        new SelectListItem{Text = "管理員", Value = "2"},
-                                        new SelectListItem{Text = "一般使用者", Value = "1"}
-                                    }, "請選擇會員身分")
+                                            {
+                                                new SelectListItem{Text = "管理員", Value = "2"},
+                                                new SelectListItem{Text = "一般使用者", Value = "1"}
+                                            }, "請選擇會員身分")
                         @Html.ValidationMessageFor(model => model.UserClass, "", new { @class = "text-danger" })
                     </div>
                 </div>
             }
-             @Html.HiddenFor(model => model.UserClass)
+            @Html.HiddenFor(model => model.UserClass)
             <div class="form-group">
                 @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -65,16 +67,16 @@
                 </div>
             </div>
 
-            @if (byte.Parse(Session["UserClass"].ToString()) == 2)
+            @if (SessionManagement.LoginUser.UserClass == 2)
             {
                 <div class="form-group">
                     @Html.LabelFor(model => model.Delete, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownList("Delete", new List<SelectListItem>
-                                {
-                                    new SelectListItem{Text = "顯示", Value = "false"},
-                                    new SelectListItem{Text = "刪除", Value = "true"}
-                                }, "會員狀態")
+                                        {
+                                            new SelectListItem{Text = "顯示", Value = "false"},
+                                            new SelectListItem{Text = "刪除", Value = "true"}
+                                        }, "會員狀態")
                         @Html.ValidationMessageFor(model => model.Delete, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -90,10 +92,7 @@
             </div>
         </div>
     }
-
-
-
-    @if (byte.Parse(Session["UserClass"].ToString()) == 2)
+    @if (SessionManagement.LoginUser.UserClass == 2)
     {
         <div>
             @Html.ActionLink("回到前一頁", "Index")

@@ -52,6 +52,7 @@ namespace Web.Controllers
 
             ReplyWeb replyWeb = new ReplyWeb();
             replyWeb.AddReply(reply);
+            //return RedirectToAction("Index", "Message");
             return RedirectToAction("Index", "Message");
         }
         #endregion

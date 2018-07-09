@@ -1,14 +1,7 @@
 ﻿@model Library.User
+@using Library.WebShare;
 @{
     ViewBag.Title = "建立會員";
-    int Id = 0;
-    byte UserClass = 0;
-
-    if (Session["Id"] != null)
-    {
-        int.TryParse(Session["Id"].ToString(), out Id);
-        byte.TryParse(Session["UserClass"].ToString(), out UserClass);
-    }
 }
 <div class="row">
     <div class="table-responsive">
@@ -26,16 +19,16 @@
                         @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                @if (UserClass == 2 )
+                @if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.UserClass == 2)
                 {
                     <div class="form-group">
                         @Html.Label("UserClass", new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DropDownList("UserClass", new List<SelectListItem>
-                                                {
-                                                    new SelectListItem{Text = "管理員", Value = "2"},
-                                                    new SelectListItem{Text = "一般使用者", Value = "1"}
-                                                }, "請選擇會員身分")
+                                                        {
+                                                            new SelectListItem{Text = "管理員", Value = "2"},
+                                                            new SelectListItem{Text = "一般使用者", Value = "1"}
+                                                        }, "請選擇會員身分")
                             @Html.ValidationMessageFor(model => model.UserClass, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -76,16 +69,16 @@
                         @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                @if (UserClass == 2)
+                @if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.UserClass == 2)
                 {
                     <div class="form-group">
                         @Html.Label("Delete", new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DropDownList("Delete", new List<SelectListItem>
-                                                {
-                                                    new SelectListItem{Text = "顯示", Value = "false"},
-                                                    new SelectListItem{Text = "刪除", Value = "true"}
-                                                }, "請選擇會員狀態")
+                                                        {
+                                                            new SelectListItem{Text = "顯示", Value = "false"},
+                                                            new SelectListItem{Text = "刪除", Value = "true"}
+                                                        }, "請選擇會員狀態")
                             @Html.ValidationMessageFor(model => model.Delete, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -101,7 +94,7 @@
                 </div>
             </div>
         }
-        @if (UserClass == 2)
+        @if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.UserClass == 2)
         {
             <div>
                 @Html.ActionLink("回到列表", "Index")

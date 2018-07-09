@@ -1,9 +1,20 @@
 ﻿@using Library;
-@model List<MessageReply>
+@using PagedList
+@using PagedList.Mvc
+@*@model List<MessageReply>*@
+@model IPagedList<MessageReply>
 
 <h2>會員留言列表</h2>
 <div class="row">
     <div class="table-responsive">
+        <p>
+            @using (Html.BeginForm("ManageIndex", "Message", FormMethod.Get))
+            {
+                <b>搜尋:</b><br />
+                @Html.TextBox("searchText") <br />
+                <input type="submit" value="Go" />
+            }
+        </p>
         <table class="table">
             <tr>
                 <th>
@@ -46,13 +57,21 @@
                         </td>
                         <td>
                             <input type="button" class="btn btn-primary btn-sm" value="回覆" onclick="location.href='@Url.Action("ReplyIndex", "Message", new{ messagesId = item.Messages.Id })'" />
-                            <input type="submit" class="btn btn-primary btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? 留言編號 = @item.Messages.Id , 留言內容 = @item.Messages.Context');" />
+                            <input type="submit" class="btn btn-danger btn-sm" value="刪除" onclick="return confirm('確定要刪除嗎? 留言編號 = @item.Messages.Id , 留言內容 = @item.Messages.Context');" />
                         </td>
                     </tr>
                 }
             }
-
-
         </table>
+        @Html.PagedListPager(Model, pageNumber => Url.Action("ManageIndex", "Message",
+                 new
+                 {
+                     pageNumber,
+                     searchText = Request.QueryString["searchText"],
+                 }),
+                 new PagedListRenderOptions
+                 {
+                     Display = PagedListDisplayMode.IfNeeded,
+                 })
     </div>
 </div>

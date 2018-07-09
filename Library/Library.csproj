@@ -68,7 +68,6 @@
     <Compile Include="DBServer\UserWeb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\MessageReply.cs" />
-    <Compile Include="WebShare\Method.cs" />
     <Compile Include="WebShare\SessionManagement.cs" />
     <Compile Include="WebShare\WebShareConst.cs" />
   </ItemGroup>

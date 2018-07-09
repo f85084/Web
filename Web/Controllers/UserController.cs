@@ -11,6 +11,8 @@ using System.Web.Security;
 using System;
 using System.Web;
 using Library.WebShare;
+using PagedList;
+using PagedList.Mvc;
 
 namespace Web.Controllers
 {
@@ -26,19 +28,32 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string searchText,int? pageNumber)
         {
             List<Library.User> users = userWeb.GetUsers()
-                    .Where(x => !x.Delete)
-                    .ToList();
-            byte UserClass = 0;
-            if (SessionManagement.LoginUser != null)
+                    .Where(x => !x.Delete).ToList();
+            //if (SessionManagement.LoginUser.UserClass == 2)
+            //{
+            //    //return View(users);
+            //    IPagedList<User> userWebPagedList = users.ToPagedList(pageNumber ?? 1, 10);
+            //    return View(userWebPagedList);
+            //}
+            if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.UserClass == 2)
             {
-                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
-            }
-            if (UserClass == 2)
-            {
-                return View(users);
+                if (searchText != null)
+                {
+                     List<Library.User> model2 = userWeb.GetUsers()
+                         .Where(x => !x.Delete && x.UserName.Contains(searchText) || searchText == null).ToList();
+                         //.Where(x => x.UserName.Contains(searchText) || searchText == null && !x.Delete ).ToList();
+                    IPagedList<User> userWebPagedList = model2.ToPagedList(pageNumber ?? 1, 5);
+                    return View(userWebPagedList);
+                }
+                else
+                {
+                    //return View(users);
+                    IPagedList<User> userWebPagedList = users.ToPagedList(pageNumber ?? 1, 10);
+                    return View(userWebPagedList);
+                }
             }
             else
             {
@@ -83,7 +98,7 @@ namespace Web.Controllers
 
                 if (SessionManagement.LoginUser != null)
                 {
-                    byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+                    UserClass=SessionManagement.LoginUser.UserClass;
                 }
                 if (UserClass == 2)
                 {
@@ -127,12 +142,7 @@ namespace Web.Controllers
                 ViewBag.UserClass = "一般";
             }
 
-            byte UserClass = 0;
-            if (Session["Id"] != null)
-            {
-                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
-            }
-            if (UserClass == 2)
+            if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.UserClass == 2)
             {
                 return View(user);
             }
@@ -175,24 +185,18 @@ namespace Web.Controllers
             {
                 return View("Edit", user);
             }
-
             userWeb.SaveUser(user);
-
-            byte UserClass = 0;
-            if (Session["Id"] != null)
+            if (SessionManagement.LoginUser != null)
             {
-                byte.TryParse(Session["UserClass"].ToString(), out UserClass);
+                Session.Remove(SessionManagement.LoginUser.UserName);
+                SessionManagement.LoginUser.UserName = user.UserName;
             }
-            if (UserClass == 2)
+            if (SessionManagement.LoginUser.UserClass == 2)
             {
                 return RedirectToAction("Index", "User");
             }
             else
             {
-                if (Session["Id"] != null)
-                {
-                    Session["UserName"] = user.UserName;
-                }
                 return RedirectToAction("Index", "Message");
             }
         }
@@ -223,13 +227,7 @@ namespace Web.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            int Id = 0;
-
-            if (Session["Id"] != null)
-            {
-                int.TryParse(Session["Id"].ToString(), out Id);
-            }
-            if (Id != 0)
+            if (SessionManagement.LoginUser != null && SessionManagement.LoginUser.Id != 0)
             {
                 return RedirectToAction("Index", "Message");
             }
@@ -248,7 +246,6 @@ namespace Web.Controllers
                 Session["Id"] = loginUser.Id;
                 Session["UserClass"] = loginUser.UserClass;
                 Session["UserName"] = loginUser.UserName;
-
                 return RedirectToAction("Index", "Message");
             }
             else
@@ -271,6 +268,22 @@ namespace Web.Controllers
         {
             Session.Abandon();
             return RedirectToAction("Index", "Message");
+        }
+        #endregion
+
+        #region 取得Session 
+        /// <summary>
+        /// 取得Session 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetSession()
+        {
+            if (SessionManagement.LoginUser != null)
+            {
+                ViewBag.UserAccount = SessionManagement.LoginUser.UserAccount;
+                ViewBag.UserName = SessionManagement.LoginUser.UserName;
+            }
+            return PartialView();
         }
         #endregion
     }
